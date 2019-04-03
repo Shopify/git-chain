@@ -25,7 +25,7 @@ module GitChain
       $stderr.puts(e.message)
       $stderr.puts
       $stderr.puts(usage)
-      raise(EntryPoint::AbortSilentError)
+      raise(AbortSilentError)
     end
 
     def run(_options)
