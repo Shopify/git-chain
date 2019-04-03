@@ -9,6 +9,7 @@ ruby '>= 2.5.0'
 group :development, :test do
   gem 'rubocop', '~> 0.65.0'
   gem 'shopify-cops', require: false, source: 'https://packages.shopify.io/shopify/gems'
+  gem 'rake'
 end
 
 group :test do
