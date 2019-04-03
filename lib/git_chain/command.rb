@@ -1,4 +1,4 @@
-module GitChainRebase
+module GitChain
   class Command
     def self.command_name
       @command_name ||= name.split('::')
@@ -22,7 +22,7 @@ module GitChainRebase
       command_name = command_name
 
       OptionParser.new do |opts|
-        opts.banner = "Usage: #{GitChainRebase::EntryPoint::PRELUDE} #{command_name} [options]"
+        opts.banner = "Usage: #{GitChain::EntryPoint::PRELUDE} #{command_name} [options]"
         option_parser(opts, options)
       end.parse!(args)
 

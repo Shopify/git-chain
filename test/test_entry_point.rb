@@ -1,6 +1,6 @@
 require 'helper'
 
-module GitChainRebase
+module GitChain
   class TestEntryPoint < MiniTest::Test
     def test_commands
       refute_nil(EntryPoint.commands['setup'])

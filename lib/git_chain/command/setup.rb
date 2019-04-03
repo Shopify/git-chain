@@ -1,6 +1,6 @@
 require 'optparse'
 
-module GitChainRebase
+module GitChain
   module Commands
     class Setup < Command
       def run(options)

@@ -1,4 +1,4 @@
-module GitChainRebase
+module GitChain
   module EntryPoint
     PRELUDE = "git chain"
 
@@ -18,9 +18,9 @@ module GitChainRebase
       end
 
       def commands
-        @commands ||= GitChainRebase::Commands.constants
-          .map(&GitChainRebase::Commands.method(:const_get))
-          .select { |c| c < GitChainRebase::Command }
+        @commands ||= GitChain::Commands.constants
+          .map(&GitChain::Commands.method(:const_get))
+          .select { |c| c < GitChain::Command }
           .map { |c| [c.command_name, c] }
           .to_h
       end
