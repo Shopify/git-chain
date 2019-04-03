@@ -28,6 +28,16 @@ module GitChain
         []
       end
 
+      def chains(dir: nil)
+        exec('config', '--null', '--get-regexp', 'branch\\..+\\.chain', dir: dir)
+          .split("\0")
+          .map { |out| out.split("\n") }
+          .map { |lines| [parse_branch_name(lines.shift), *lines] }
+          .to_h
+      rescue Failure
+        []
+      end
+
       def current_branch(dir: nil)
         exec('rev-parse', '--abbrev-ref', dir: dir)
       rescue Failure
@@ -89,6 +99,12 @@ module GitChain
         end
         args += config_args
         capture3(*args, dir: dir)
+      end
+
+      def parse_branch_name(config)
+        match = /^branch\.(.+)\.[a-zA-Z]+$/.match(config)
+        raise("Expected config #{config} to match regexp") unless match
+        match[1]
       end
     end
   end
