@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+lib_path = File.expand_path("../../lib", __FILE__)
+$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
+
+require "irb"
+require "irb/completion"
+require 'irb/ext/save-history'
+require 'git_chain_rebase'
+
+IRB_HISTORY_SIZE = 100
+IRB_HISTORY_FILE = File.expand_path('../../.console_history', __FILE__)
+if File.exist?(IRB_HISTORY_FILE)
+  lines = IO.readlines(IRB_HISTORY_FILE).collect(&:chomp)
+  Readline::HISTORY.push(*lines)
+end
+Kernel.at_exit do
+  lines = Readline::HISTORY.chunk(&:itself).map(&:first)
+  lines = lines[-IRB_HISTORY_SIZE, -1] if lines.size > IRB_HISTORY_SIZE
+  File.open(IRB_HISTORY_FILE, File::WRONLY | File::CREAT | File::TRUNC) { |io| io.puts lines.join("\n") }
+end
+
+IRB.start

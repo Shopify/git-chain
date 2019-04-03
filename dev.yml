@@ -1,0 +1,16 @@
+name: git-chain-rebase
+type:
+  - ruby
+
+up:
+  - ruby: 2.5.5
+  - bundler
+
+test: "true"
+
+console: bin/console
+
+build: { implemented: false }
+
+commands:
+  style: "bundle exec rubocop -D"
