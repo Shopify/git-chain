@@ -10,7 +10,7 @@ module GitChain
       end
 
       def run(options)
-        puts "Rebase #{options}"
+        puts "Rebase #{options[:chain_name]}"
       end
     end
   end
