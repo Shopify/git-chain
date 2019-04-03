@@ -22,31 +22,37 @@ module GitChain
         out.chomp
       end
 
-      def current_branch
-        exec('rev-parse', '--abbrev-ref')
+      def branches(dir: nil)
+        exec('branch', '--list', '--format=%(refname:short)', dir: dir).split
+      rescue Failure
+        []
+      end
+
+      def current_branch(dir: nil)
+        exec('rev-parse', '--abbrev-ref', dir: dir)
       rescue Failure
         nil
       end
 
-      def upstream_branch
-        branch = exec('rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}')
+      def upstream_branch(dir: nil)
+        branch = exec('rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}', dir: dir)
         match = branch.match(%r{\Aorigin/(.+)\n\z})
         match && match[1]
       rescue Failure
         nil
       end
 
-      def merge_base(a, b)
-        exec('merge-base', a, b)
+      def merge_base(a, b, dir: nil)
+        exec('merge-base', a, b, dir: dir)
       rescue
         nil
       end
 
-      def set_config(key, value, scope: nil)
-        git_config('--unset-all', key, scope: scope)
+      def set_config(key, value, scope: nil, dir: nil)
+        git_config('--unset-all', key, scope: scope, dir: dir)
 
         Array(value).each do |val|
-          git_config('--add', key, val, scope: scope)
+          git_config('--add', key, val, scope: scope, dir: dir)
         end
       end
 

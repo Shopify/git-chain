@@ -14,7 +14,11 @@ module GitChain
       end
 
       def run(options)
-        puts "Setup #{options}"
+        current_branches = Git.branches
+        branches = options[:args]
+        missing = branches - current_branches
+
+        raise(AbortError, "Branch does not exist: #{missing.join(', ')}") unless missing.empty?
       end
     end
   end

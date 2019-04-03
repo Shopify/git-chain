@@ -5,4 +5,4 @@ $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 
 require 'git_chain'
 
-GitChain::EntryPoint.call(ARGV.dup)
+exit(GitChain::EntryPoint.call(ARGV.dup))

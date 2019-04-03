@@ -4,8 +4,7 @@ module GitChain
     autoload :Rebase, 'git_chain/command/rebase'
     autoload :Setup, 'git_chain/command/setup'
 
-    class CommandArgError < ArgumentError
-    end
+    CommandArgError = Class.new(ArgumentError)
 
     def self.command_name
       @command_name ||= name.split('::')
@@ -26,6 +25,7 @@ module GitChain
       $stderr.puts(e.message)
       $stderr.puts
       $stderr.puts(usage)
+      raise(EntryPoint::AbortSilentError)
     end
 
     def run(_options)

@@ -11,6 +11,12 @@ module GitChain
         return print_usage unless cmd
 
         cmd.new.call(args)
+        0
+      rescue AbortError => e
+        $stderr.puts(e.message)
+        1
+      rescue AbortSilentError
+        1
       end
 
       def print_usage
