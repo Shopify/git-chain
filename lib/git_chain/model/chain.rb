@@ -55,6 +55,16 @@ module GitChain
 
           sorted
         end
+
+        def from_config(name)
+          chains = Git.chains(chain_name: name)
+          branches = chains.keys.map(&Branch.method(:from_config))
+
+          new(
+            name: name,
+            branches: branches,
+          )
+        end
       end
     end
   end

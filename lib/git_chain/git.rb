@@ -28,8 +28,10 @@ module GitChain
         []
       end
 
-      def chains(dir: nil)
-        exec('config', '--null', '--get-regexp', 'branch\\..+\\.chain', dir: dir)
+      def chains(chain_name: nil, dir: nil)
+        args = %w(config --null --get-regexp branch\\..+\\.chain)
+        args << chain_name if chain_name
+        exec(*args, dir: dir)
           .split("\0")
           .map { |out| out.split("\n") }
           .map { |lines| [parse_branch_name(lines.shift), *lines] }
