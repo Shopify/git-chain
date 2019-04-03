@@ -26,7 +26,7 @@ module GitChain
       command_name = command_name
 
       OptionParser.new do |opts|
-        opts.banner = "Usage: #{GitChain::EntryPoint::PRELUDE} #{command_name} [options]"
+        opts.banner = "Usage: #{EntryPoint::PRELUDE} #{command_name} [options]"
         option_parser(opts, options)
       end.parse!(args)
 

@@ -3,7 +3,7 @@ require 'optparse'
 module GitChain
   class Command
     class Setup < Command
-      include GitChain::Option::ChainName
+      include Option::ChainName
 
       def run(options)
         puts "Setup #{options}"
