@@ -41,7 +41,7 @@ module GitChain
       end
 
       def current_branch(dir: nil)
-        exec('rev-parse', '--abbrev-ref', dir: dir)
+        exec('rev-parse', '--abbrev-ref', 'HEAD', dir: dir)
       rescue Failure
         nil
       end
