@@ -5,6 +5,7 @@ require 'git_chain_rebase'
 
 require 'minitest'
 require 'mocha/mini_test'
+require "minitest/autorun"
 
 require 'tmpdir'
 require 'fileutils'
