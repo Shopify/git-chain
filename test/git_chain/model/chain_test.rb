@@ -1,8 +1,8 @@
-require '../helper'
+require 'test_helper'
 
 module GitChain
   class Model
-    class TestChain < MiniTest::Test
+    class ChainTest < MiniTest::Test
       include RepositoryTestHelper
 
       def test_from_config

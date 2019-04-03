@@ -1,7 +1,7 @@
-require 'helper'
+require 'test_helper'
 
 module GitChain
-  class TestRebase < MiniTest::Test
+  class RebaseTest < MiniTest::Test
     def test_rebase
       assert(true)
     end
