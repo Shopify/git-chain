@@ -37,9 +37,22 @@ module GitChain
       parser.to_s
     end
 
+    def banner
+      "#{command_name} #{banner_options}"
+    end
+
+    def banner_options
+      ""
+    end
+
+    def description
+      ""
+    end
+
     def options(args)
       parser, options = option_parser
       parser.parse!(args)
+      parser.summarize
 
       # Leftover arguments
       options[:args] = args
@@ -52,7 +65,7 @@ module GitChain
       options = default_options
 
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: #{EntryPoint::PRELUDE} #{command_name} [options]"
+        opts.banner = "Usage: #{EntryPoint::PRELUDE} #{banner}"
         configure_option_parser(opts, options)
       end
 

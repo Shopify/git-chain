@@ -5,10 +5,18 @@ module GitChain
     class << self
       def call(args)
         name = args.shift
-        return print_usage unless name
+        unless name
+          puts(usage)
+          return 0
+        end
 
         cmd = commands[name]
-        return print_usage unless cmd
+        unless cmd
+          $stderr.puts("Unknown command: #{name}")
+          $stderr.puts
+          $stderr.puts(usage)
+          raise(AbortSilentError)
+        end
 
         cmd.new.call(args)
         0
@@ -19,8 +27,22 @@ module GitChain
         1
       end
 
-      def print_usage
-        puts "Invalid usage"
+      def usage
+        table = commands.values
+          .map(&:new)
+          .map { |c| [c.banner, c.description] }
+          .sort
+          .to_h
+
+        column_size = table.keys.map(&:size).max
+
+        <<~EOS
+          Usage:
+            #{PRELUDE} <command>
+
+          Commands:
+          #{table.map { |banner, desc| "  #{format("%-#{column_size}s", banner)}   #{desc}" }.join("\n")}
+        EOS
       end
 
       def commands
