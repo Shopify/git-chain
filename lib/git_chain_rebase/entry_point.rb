@@ -1,5 +1,7 @@
 module GitChainRebase
   module EntryPoint
+    PRELUDE = "git chain"
+
     class << self
       def call(args)
         name = args.shift

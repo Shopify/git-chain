@@ -1,8 +1,10 @@
+require 'optparse'
+
 module GitChainRebase
   module Commands
     class Setup < Command
-      def call(args)
-        puts "Hello #{args}"
+      def run(options)
+        puts "Hello #{options}"
       end
     end
   end
