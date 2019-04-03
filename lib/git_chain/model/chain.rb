@@ -1,6 +1,6 @@
 module GitChain
-  module Models
-    class Chain
+  class Model
+    class Chain < Model
       attr_reader :name, :branches
 
       def initialize(name:, branches:)
