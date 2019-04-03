@@ -2,19 +2,19 @@
 
 set -e
 
-git init
+git init >/dev/null
 
 for b in master a b c; do
-    git checkout -b $b
-    git commit --allow-empty -m "$b.1"
+    git checkout -b $b 2>/dev/null
+    git commit --allow-empty -m "$b.1" >/dev/null
 done
 
 for b in master a b c; do
-    git checkout $b
-    git commit --allow-empty -m "$b.2"
+    git checkout $b 2>/dev/null
+    git commit --allow-empty -m "$b.2" >/dev/null
 done
 
-git checkout master
+git checkout master 2>/dev/null
 
 # * 8460cfb  (c)
 # |   c.2
