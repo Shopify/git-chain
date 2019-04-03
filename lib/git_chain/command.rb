@@ -1,5 +1,9 @@
 module GitChain
   class Command
+    autoload :Branch, 'git_chain/command/branch'
+    autoload :Rebase, 'git_chain/command/rebase'
+    autoload :Setup, 'git_chain/command/setup'
+
     def self.command_name
       @command_name ||= name.split('::')
         .last
@@ -31,10 +35,7 @@ module GitChain
       options
     end
 
-    def option_parser(opts, options)
-      opts.on("-n", "--name=NAME", "Chain name") do |name|
-        options[:chain_name] = name
-      end
+    def option_parser(_opts, _options)
     end
 
     def default_options

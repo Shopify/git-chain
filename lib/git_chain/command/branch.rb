@@ -2,11 +2,11 @@ require 'optparse'
 
 module GitChain
   class Command
-    class Setup < Command
+    class Branch < Command
       include GitChain::Option::ChainName
 
       def run(options)
-        puts "Setup #{options}"
+        puts "Branch #{options}"
       end
     end
   end
