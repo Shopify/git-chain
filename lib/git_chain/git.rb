@@ -29,7 +29,7 @@ module GitChain
       end
 
       def chains(chain_name: nil, dir: nil)
-        args = %w(config --null --get-regexp branch\\..+\\.chain)
+        args = %w(config --null --get-regexp ^branch\\..+\\.chain$)
         args << chain_name if chain_name
         exec(*args, dir: dir)
           .split("\0")
@@ -57,6 +57,12 @@ module GitChain
       def merge_base(a, b, dir: nil)
         exec('merge-base', a, b, dir: dir)
       rescue
+        nil
+      end
+
+      def rev_parse(rev, dir: nil)
+        exec("rev-parse", rev, dir: dir)
+      rescue Failure
         nil
       end
 

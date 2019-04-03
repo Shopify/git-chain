@@ -1,7 +1,7 @@
 module GitChain
   class Model
     class Branch < Model
-      attr_reader :name, :chain_name, :parent_branch, :branch_point
+      attr_accessor :name, :chain_name, :parent_branch, :branch_point
 
       def initialize(name:, chain_name:, parent_branch:, branch_point:)
         @name = name
