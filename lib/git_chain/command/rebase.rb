@@ -10,7 +10,21 @@ module GitChain
       end
 
       def run(options)
-        puts "Rebase #{options[:chain_name]}"
+        raise(AbortError, "Current branch '#{Git.current_branch}' is not in a chain or the chain specified does not exist.") unless options[:chain_name]
+
+        chain = GitChain::Model::Chain.from_config(options[:chain_name])
+
+        puts "Rebasing the following branches: #{chain.branches.map(&:name)}"
+
+        branches_to_rebase = chain.branches[1..-1]
+
+        raise(AbortError, "No branches to rebase for chain '#{chain_name}'.") if branches_to_rebase.empty?
+
+        branches_to_rebase.each do |branch|
+          Git.exec("rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name)
+          # validate the parameters
+          # update the branch points
+        end
       end
     end
   end
