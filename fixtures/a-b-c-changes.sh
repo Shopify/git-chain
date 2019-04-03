@@ -18,3 +18,9 @@ git commit -m "a.2 (conflicting)" > /dev/null
 
 git checkout master >/dev/null
 
+* 7748320 (a) a.2 (conflicting)
+| * d522f2f (c) c.1
+| * 74a490d (b) b.1
+|/
+* d89f9f4 a.1
+* cc71e35 (HEAD -> master) master.1
