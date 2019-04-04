@@ -27,7 +27,7 @@ module GitChain
         end
       end
 
-      def run(options)
+      def parse_branch_options(options)
         case options[:args].size
         when 1
           start_point = Git.current_branch
@@ -41,20 +41,35 @@ module GitChain
 
         raise(AbortError, "#{start_point} is not a branch") if Git.exec('branch', '--list', start_point).empty?
 
+        [start_point, branch_name]
+      end
+
+      def detect_chain(options, start_point, branch_name)
+        return Models::Chain.from_config(options[:chain_name]) if options[:chain_name]
+
+        return Models::Chain.from_config(branch_name) if options[:mode] == :new
+
+        # mode is nil or :insert
+
         parent_branch = Models::Branch.from_config(start_point)
-        chain_name = options[:chain_name]
 
-        if chain_name
-          if parent_branch.chain_name && options[:chain_name] != parent_branch.chain_name
-            raise(AbortError, "Starting point #{start_point} already belongs to chain #{parent_branch.chain_name}")
-          end
-        elsif parent_branch.chain_name
-          chain_name = parent_branch.chain_name
+        return Models::Chain.from_config(branch_name) unless parent_branch.chain_name
+
+        parent_chain = Models::Chain.from_config(parent_branch.chain_name)
+        if parent_chain.branch_names.last == start_point
+          parent_chain
+        elsif options[:mode] == :insert
+          parent_chain
         else
-          chain_name = branch_name
+          # mode is nil, which will default to :new because we are in the middle of the chain
+          Models::Chain.from_config(branch_name)
         end
+      end
 
-        chain = Models::Chain.from_config(chain_name)
+      def run(options)
+        start_point, branch_name = parse_branch_options(options)
+
+        chain = detect_chain(options, start_point, branch_name)
         branch_names = chain.branch_names
 
         if branch_names.empty?
@@ -88,7 +103,7 @@ module GitChain
           raise(AbortError, e)
         end
 
-        Setup.new.call(['-n', chain_name, *branch_names])
+        Setup.new.call(['-n', chain.name, *branch_names])
       end
     end
   end

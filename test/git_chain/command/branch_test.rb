@@ -42,7 +42,6 @@ module GitChain
       end
 
       def test_new_middle_of_chain
-        skip
         with_test_repository('a-b-c-chain') do
           chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
@@ -59,7 +58,6 @@ module GitChain
       end
 
       def test_new_end_of_chain
-        skip
         with_test_repository('a-b-c-chain') do
           chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)

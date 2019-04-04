@@ -30,7 +30,7 @@ module GitChain
 
         raise(AbortError, "Branches are not all connected") if Git.merge_base(*branch_names).nil?
 
-        $stderr.puts("Setting up chain #{options[:chain_name]}")
+        puts("Setting up chain #{options[:chain_name]}")
 
         chain = Models::Chain.from_config(options[:chain_name])
         chain_branch_names = chain.branch_names
@@ -45,6 +45,8 @@ module GitChain
         end
 
         branches.each_with_index do |b, i|
+          next if i == 0 # Skip the base, it can belong to anything
+
           unless b.chain_name == chain.name
             if b.chain_name
               raise(AbortError, "Branch #{b.name} is currently attached to chain #{b.chain_name}")
@@ -54,9 +56,9 @@ module GitChain
             end
           end
 
-          parent_branch = i > 0 ? branches[i - 1].name : nil
+          parent_branch = branches[i - 1].name
           if b.parent_branch != parent_branch
-            raise(AbortError, "Branch #{b.name} is currently based on #{b.parent_branch}") unless parent_branch
+            puts("Changing parent branch of #{b.name} from #{b.parent_branch} to #{parent_branch}") if b.parent_branch
             Git.set_config("branch.#{b.name}.parentBranch", parent_branch, scope: :local)
             b.parent_branch = parent_branch
           end
@@ -66,7 +68,7 @@ module GitChain
             parsed = Git.rev_parse(parent_branch)
             merge_base = Git.merge_base(parent_branch, b.name)
             unless parsed == merge_base
-              $stderr.puts("#{b.name} is not currently branched from the tip of #{b.parent_branch}")
+              puts("#{b.name} is not currently branched from the tip of #{b.parent_branch}")
             end
             branch_point = merge_base
           end
