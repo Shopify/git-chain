@@ -48,26 +48,31 @@ module GitChain
               raise(AbortError, "Branch #{b.name} is currently attached to chain #{b.chain_name}")
             else
               Git.set_config("branch.#{b.name}.chain", chain.name, scope: :local)
+              b.chain_name = chain.name
             end
           end
 
-          parent_branch = i > 0 ? chain.branches[i - 1].name : nil
+          parent_branch = i > 0 ? branches[i - 1].name : nil
           if b.parent_branch != parent_branch
             raise(AbortError, "Branch #{b.name} is currently based on #{b.parent_branch}") unless parent_branch
             Git.set_config("branch.#{b.name}.parentBranch", parent_branch, scope: :local)
+            b.parent_branch = parent_branch
           end
 
           branch_point = nil
           if parent_branch
             parsed = Git.rev_parse(parent_branch)
             merge_base = Git.merge_base(parent_branch, b.name)
-            raise(AbortError, "Branch #{b.name} is not based on #{b.parent_branch}") unless parsed == merge_base
-            branch_point = parsed
+            unless parsed == merge_base
+              $stderr.puts("#{b.name} is not currently branched from the tip of #{b.parent_branch}")
+            end
+            branch_point = merge_base
           end
 
           if b.branch_point != branch_point
             raise(AbortError, "Branch #{b.name} is currently based on #{b.branch_point}") unless branch_point
             Git.set_config("branch.#{b.name}.branchPoint", branch_point, scope: :local)
+            b.branch_point = branch_point
           end
         end
 
