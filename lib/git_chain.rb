@@ -4,6 +4,7 @@ module GitChain
   autoload :Git, 'git_chain/git'
   autoload :Model, 'git_chain/model'
   autoload :Option, 'git_chain/option'
+  autoload :Util, 'git_chain/util'
 
   AbortSilentError = Class.new(RuntimeError)
   AbortError = Class.new(RuntimeError)
