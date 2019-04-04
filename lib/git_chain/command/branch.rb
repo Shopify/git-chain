@@ -52,7 +52,6 @@ module GitChain
         if branch_names.empty?
           branch_names << start_point << branch_name
         else
-          puts "->Branches: #{branch_names}"
           index = branch_names.index(start_point)
           branch_names.insert(index + 1, branch_name)
         end
