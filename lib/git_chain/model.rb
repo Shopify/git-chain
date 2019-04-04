@@ -3,6 +3,6 @@ module GitChain
     include Util::EqualVariables
 
     autoload :Branch, "git_chain/model/branch"
-    autoload :Chain, "git_chain/model/Chain"
+    autoload :Chain, "git_chain/model/chain"
   end
 end
