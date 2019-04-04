@@ -30,7 +30,7 @@ module GitChain
 
       def chains(chain_name: nil, dir: nil)
         args = %w(config --null --get-regexp ^branch\\..+\\.chain$)
-        args << chain_name if chain_name
+        args << "^#{Regexp.escape(chain_name)}$" if chain_name
         exec(*args, dir: dir)
           .split("\0")
           .map { |out| out.split("\n") }
@@ -41,7 +41,7 @@ module GitChain
       end
 
       def current_branch(dir: nil)
-        exec('rev-parse', '--abbrev-ref', 'HEAD', dir: dir)
+        exec('symbolic-ref', '--short', 'HEAD', dir: dir)
       rescue Failure
         nil
       end

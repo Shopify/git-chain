@@ -4,7 +4,7 @@ module GitChain
     autoload :Rebase, 'git_chain/command/rebase'
     autoload :Setup, 'git_chain/command/setup'
 
-    CommandArgError = Class.new(ArgumentError)
+    ArgError = Class.new(ArgumentError)
 
     def self.command_name
       @command_name ||= name.split('::')
@@ -21,7 +21,7 @@ module GitChain
     def call(args = [])
       options = options(args)
       run(options)
-    rescue CommandArgError, OptionParser::ParseError => e
+    rescue ArgError, OptionParser::ParseError => e
       $stderr.puts(e.message)
       $stderr.puts
       $stderr.puts(usage)
