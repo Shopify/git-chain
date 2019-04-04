@@ -14,18 +14,17 @@ module GitChain
       end
 
       def test_sort
-        default_attributes = { chain_name: "default", branch_point: nil}
         branches = {
-          master: Branch.new(default_attributes.merge(name: "master", parent_branch: nil)),
-          a: Branch.new(default_attributes.merge(name: "a", parent_branch: "master")),
-          b: Branch.new(default_attributes.merge(name: "b", parent_branch: "a")),
-          c: Branch.new(default_attributes.merge(name: "c", parent_branch: "b")),
+          master: Branch.new(name: "master"),
+          a: Branch.new(name: "a", parent_branch: "master"),
+          b: Branch.new(name: "b", parent_branch: "a"),
+          c: Branch.new(name: "c", parent_branch: "b"),
         }
 
         unsorted = [branches[:master], branches[:a], branches[:c], branches[:b]]
         expected = [branches[:master], branches[:a], branches[:b], branches[:c]]
 
-        assert_equal expected, Chain.sort_branches(unsorted)
+        assert_equal(expected, Chain.sort_branches(unsorted))
       end
     end
   end

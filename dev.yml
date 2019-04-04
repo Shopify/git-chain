@@ -6,7 +6,7 @@ up:
   - ruby: 2.6.2
   - bundler
 
-test: "true"
+test: "rake test"
 
 console: bin/console
 

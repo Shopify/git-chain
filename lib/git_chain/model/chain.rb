@@ -3,9 +3,17 @@ module GitChain
     class Chain < Model
       attr_accessor :name, :branches
 
-      def initialize(name:, branches:)
+      def initialize(name:, branches: [])
         @name = name
         @branches = branches
+      end
+
+      def branch_names
+        branches.map(&:name)
+      end
+
+      def empty?
+        branches.empty?
       end
 
       class << self

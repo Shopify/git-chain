@@ -31,7 +31,7 @@ module GitChain
         $stderr.puts("Setting up chain #{options[:chain_name]}")
 
         chain = Model::Chain.from_config(options[:chain_name])
-        chain_branch_names = chain.branches.map(&:name)
+        chain_branch_names = chain.branch_names
 
         branches = branch_names.each_with_index.map do |b, i|
           current = chain.branches[i]
@@ -69,11 +69,10 @@ module GitChain
             branch_point = merge_base
           end
 
-          if b.branch_point != branch_point
-            raise(AbortError, "Branch #{b.name} is currently based on #{b.branch_point}") unless branch_point
-            Git.set_config("branch.#{b.name}.branchPoint", branch_point, scope: :local)
-            b.branch_point = branch_point
-          end
+          next unless b.branch_point != branch_point
+          raise(AbortError, "Branch #{b.name} is currently based on #{b.branch_point}") unless branch_point
+          Git.set_config("branch.#{b.name}.branchPoint", branch_point, scope: :local)
+          b.branch_point = branch_point
         end
 
         removed = chain_branch_names - branch_names
@@ -85,8 +84,6 @@ module GitChain
 
         puts "New: #{branch_names.join(' -> ')}"
         puts "Removed: #{removed}"
-
-        Git.exec('checkout', branch_names.last)
       end
     end
   end
