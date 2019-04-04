@@ -11,8 +11,8 @@ for b in master a b c; do
     git add $b.txt
     git commit -m "$b.1"
 
-    git config "branch.$b.chain" default
     if [ ! -z "$PREV" ]; then
+        git config "branch.$b.chain" default
         git config "branch.$b.parentBranch" $PREV
     fi
 

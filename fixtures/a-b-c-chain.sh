@@ -16,8 +16,8 @@ done
 
 PREV=""
 for b in master a b c; do
-    git config branch.$b.chain default
     if [[ ! -z "$PREV" ]]; then
+        git config branch.$b.chain default
         git config branch.$b.parentBranch $PREV
         git config branch.$b.branchPoint $(git rev-parse $PREV^)
     fi
