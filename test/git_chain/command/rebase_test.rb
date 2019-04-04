@@ -20,7 +20,7 @@ module GitChain
 
     def test_conflict
       with_test_repository("a-b-c-conflicts") do
-        Commands::Rebase.new.call
+        Commands::Rebase.new.run(chain_name: "default")
 
         %x(git add .)
         %x(git commit -m message)
