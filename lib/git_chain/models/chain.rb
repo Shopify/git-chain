@@ -21,12 +21,12 @@ module GitChain
           chains = Git.chains(chain_name: name)
           branches = chains.keys.map(&Branch.method(:from_config))
 
-          parents = branches.map(&:parent_branch)
+          parents = branches.map(&:parent_branch).compact
           missing = parents - chains.keys
 
           raise(AbortError, "More that one start branch: #{missing}.") if missing.size > 1
 
-          branches << Branch.new(name: missing.first, chain_name: name)
+          branches << Branch.new(name: missing.first, chain_name: name) if missing.size.positive?
 
           new(
             name: name,
@@ -41,7 +41,7 @@ module GitChain
           current_parent = nil
           until remaining.empty?
             node = remaining.find { |branch| branch.parent_branch == current_parent }
-            raise(AbortError, "Branch #{current_parent} is not connected to the rest of the chain") unless node
+            raise(AbortError, "Branch '#{current_parent}' is not connected to the rest of the chain") unless node
 
             sorted << node
             remaining.delete(node)
