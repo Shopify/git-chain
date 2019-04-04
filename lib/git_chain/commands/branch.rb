@@ -1,7 +1,7 @@
 require 'optparse'
 
 module GitChain
-  class Command
+  module Commands
     class Branch < Command
       def banner_options
         "<start_point> branch"
@@ -41,7 +41,7 @@ module GitChain
 
         raise(AbortError, "#{start_point} is not a branch") if Git.exec('branch', '--list', start_point).empty?
 
-        parent_branch = Model::Branch.from_config(start_point)
+        parent_branch = Models::Branch.from_config(start_point)
         chain_name = options[:chain_name]
 
         if chain_name
@@ -54,7 +54,7 @@ module GitChain
           chain_name = branch_name
         end
 
-        chain = Model::Chain.from_config(chain_name)
+        chain = Models::Chain.from_config(chain_name)
         branch_names = chain.branch_names
 
         if branch_names.empty?

@@ -1,18 +1,18 @@
 require 'test_helper'
 
 module GitChain
-  class Command
+  module Commands
     class BranchTest < MiniTest::Test
       include RepositoryTestHelper
 
       def test_append
         with_test_repository('a-b-c-chain') do
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
 
           Branch.new.call(%w(d))
 
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c d), chain.branch_names)
 
           assert_equal('c', chain.branches[4].parent_branch)
@@ -22,13 +22,13 @@ module GitChain
 
       def test_insert_chain
         with_test_repository('a-b-c-chain') do
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
           c_branch_point = chain.branches.last.branch_point
 
           Branch.new.call(%w(b d --insert))
 
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b d c), chain.branch_names)
 
           d = chain.branches[3]
@@ -44,12 +44,12 @@ module GitChain
       def test_new_middle_of_chain
         skip
         with_test_repository('a-b-c-chain') do
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
 
           Branch.new.call(%w(b d))
 
-          chain = Model::Chain.from_config('d')
+          chain = Models::Chain.from_config('d')
           assert_equal(%w(b d), chain.branch_names)
 
           d = chain.branches[1]
@@ -61,12 +61,12 @@ module GitChain
       def test_new_end_of_chain
         skip
         with_test_repository('a-b-c-chain') do
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
 
           Branch.new.call(%w(d --new))
 
-          chain = Model::Chain.from_config('d')
+          chain = Models::Chain.from_config('d')
           assert_equal(%w(c d), chain.branch_names)
 
           assert_equal('c', chain.branches[1].parent_branch)
@@ -74,10 +74,9 @@ module GitChain
         end
       end
 
-
       def test_branch_outside_of_chain
         with_test_repository('a-b-c-chain') do
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
 
           Git.exec('checkout', 'b', '-b', 'd')
@@ -85,10 +84,10 @@ module GitChain
 
           Branch.new.call(%w(d e))
 
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
 
-          chain = Model::Chain.from_config('e')
+          chain = Models::Chain.from_config('e')
           assert_equal(%w(d e), chain.branch_names)
         end
       end

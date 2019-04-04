@@ -1,15 +1,15 @@
 require 'test_helper'
 
 module GitChain
-  class Command
+  module Commands
     class SetupTest < MiniTest::Test
       include RepositoryTestHelper
 
       def test_chain_noop
         with_test_repository('a-b-c-chain') do
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           Setup.new.call(%w(master a b c))
-          assert_equal(chain, Model::Chain.from_config('default'))
+          assert_equal(chain, Models::Chain.from_config('default'))
         end
       end
 
@@ -24,13 +24,13 @@ module GitChain
 
       def test_setup
         with_test_repository('a-b-c') do
-          before = Model::Chain.from_config('default')
+          before = Models::Chain.from_config('default')
           assert_equal("default", before.name)
           assert_empty(before.branches)
 
           Setup.new.call(%w(-n default master a b c))
 
-          chain = Model::Chain.from_config('default')
+          chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)
           chain.branches.each_with_index do |b, i|
             if i == 0

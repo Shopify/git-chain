@@ -1,9 +1,9 @@
 require 'optparse'
 
 module GitChain
-  class Command
+  module Commands
     class Setup < Command
-      include Option::ChainName
+      include Options::ChainName
 
       def post_process_options!(options)
         raise(ArgError, "Expects at least 2 arguments") unless options[:args].size >= 2
@@ -32,7 +32,7 @@ module GitChain
 
         $stderr.puts("Setting up chain #{options[:chain_name]}")
 
-        chain = Model::Chain.from_config(options[:chain_name])
+        chain = Models::Chain.from_config(options[:chain_name])
         chain_branch_names = chain.branch_names
 
         branches = branch_names.each_with_index.map do |b, i|
@@ -40,7 +40,7 @@ module GitChain
           if current&.name == b
             current
           else
-            Model::Branch.from_config(b)
+            Models::Branch.from_config(b)
           end
         end
 

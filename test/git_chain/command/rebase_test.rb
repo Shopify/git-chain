@@ -6,7 +6,7 @@ module GitChain
 
     def test_rebasing_a_clean_chain
       with_test_repository("a-b-c-chain") do
-        Command::Rebase.new.call
+        Commands::Rebase.new.call
 
         assert_equal Git.rev_parse("master"), Git.merge_base("master", "a")
         assert_equal Git.rev_parse("a"), Git.merge_base("a", "b")
@@ -20,13 +20,13 @@ module GitChain
 
     def test_conflict
       with_test_repository("a-b-c-conflicts") do
-        Command::Rebase.new.call
+        Commands::Rebase.new.call
 
-        `git add .`
-        `git commit -m message`
-        `git rebase --continue`
+        %x(git add .)
+        %x(git commit -m message)
+        %x(git rebase --continue)
 
-        Command::Rebase.new.call
+        Commands::Rebase.new.call
 
         assert_equal Git.rev_parse("master"), Git.merge_base("master", "a")
         assert_equal Git.rev_parse("a"), Git.merge_base("a", "b")
@@ -47,12 +47,12 @@ module GitChain
 
     def test_rebase_in_progress
       with_test_repository("a-b-c-conflicts") do
-        `git rebase --onto a b^ b`
+        %x(git rebase --onto a b^ b)
         exception = assert_raises(AbortError) do
-          Command::Rebase.new.call
+          Commands::Rebase.new.call
         end
 
-        assert_match /rebase is in progress/, exception.message
+        assert_match(/rebase is in progress/, exception.message)
       end
     end
   end

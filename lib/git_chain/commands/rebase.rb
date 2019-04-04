@@ -1,9 +1,9 @@
 require 'optparse'
 
 module GitChain
-  class Command
+  module Commands
     class Rebase < Command
-      include Option::ChainName
+      include Options::ChainName
 
       def description
         "Rebase all branches of the chain"
@@ -16,7 +16,7 @@ module GitChain
 
         raise(AbortError, "Current branch '#{Git.current_branch}' is not in a chain.") unless options[:chain_name]
 
-        chain = GitChain::Model::Chain.from_config(options[:chain_name])
+        chain = GitChain::Models::Chain.from_config(options[:chain_name])
         raise(AbortError, "Chain '#{Git.chain}' does not exist.") if chain.empty?
 
         puts "Rebasing the following branches: #{chain.branch_names}"
@@ -26,20 +26,18 @@ module GitChain
         raise(AbortError, "No branches to rebase for chain '#{chain_name}'.") if branches_to_rebase.empty?
 
         branches_to_rebase.each do |branch|
-          begin
-            parent_sha = Git.rev_parse(branch.parent_branch)
+          parent_sha = Git.rev_parse(branch.parent_branch)
 
-            if forwardable_branch_point?(branch)
-              Git.set_config("branch.#{branch.name}.branchPoint", parent_sha)
-            end
-
-            Git.exec("rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name)
-            Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
-            # validate the parameters
-          rescue GitChain::Git::Failure => e
-            puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}"
-            return
+          if forwardable_branch_point?(branch)
+            Git.set_config("branch.#{branch.name}.branchPoint", parent_sha)
           end
+
+          Git.exec("rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name)
+          Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
+          # validate the parameters
+        rescue GitChain::Git::Failure => e
+          puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
+            "Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}"
         end
       end
 

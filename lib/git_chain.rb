@@ -1,9 +1,9 @@
 module GitChain
-  autoload :Command, 'git_chain/command'
+  autoload :Commands, 'git_chain/commands'
   autoload :EntryPoint, 'git_chain/entry_point'
   autoload :Git, 'git_chain/git'
-  autoload :Model, 'git_chain/model'
-  autoload :Option, 'git_chain/option'
+  autoload :Models, 'git_chain/models'
+  autoload :Options, 'git_chain/options'
   autoload :Util, 'git_chain/util'
 
   AbortSilentError = Class.new(RuntimeError)

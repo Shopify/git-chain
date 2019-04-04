@@ -8,7 +8,7 @@ require 'mocha/mini_test'
 require "minitest/autorun"
 require 'minitest/reporters'
 
-# MiniTest::Reporters.use!
+MiniTest::Reporters.use!
 
 require 'tmpdir'
 require 'fileutils'

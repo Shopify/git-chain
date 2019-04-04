@@ -1,5 +1,5 @@
 module GitChain
-  class Model
+  module Models
     class Chain < Model
       attr_accessor :name, :branches
 

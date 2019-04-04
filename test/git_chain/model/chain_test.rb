@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module GitChain
-  class Model
+  module Models
     class ChainTest < MiniTest::Test
       include RepositoryTestHelper
 

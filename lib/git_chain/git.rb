@@ -95,7 +95,7 @@ module GitChain
 
       def rebase_in_progress?(dir: nil)
         dir ||= ".git"
-        File.exists?(File.expand_path(File.join(dir, "REBASE_HEAD")))
+        File.exist?(File.expand_path(File.join(dir, "REBASE_HEAD")))
       end
 
       private

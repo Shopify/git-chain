@@ -46,11 +46,7 @@ module GitChain
       end
 
       def commands
-        @commands ||= Command.constants
-          .map(&Command.method(:const_get))
-          .select { |c| c < Command }
-          .map { |c| [c.command_name, c] }
-          .to_h
+        Commands.commands
       end
     end
   end
