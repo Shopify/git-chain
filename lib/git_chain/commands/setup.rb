@@ -30,7 +30,7 @@ module GitChain
 
         raise(AbortError, "Branches are not all connected") if Git.merge_base(*branch_names).nil?
 
-        puts("Setting up chain #{options[:chain_name]}")
+        GitChain::Logger.info("Setting up chain #{options[:chain_name]}")
 
         chain = Models::Chain.from_config(options[:chain_name])
         chain_branch_names = chain.branch_names
@@ -58,7 +58,7 @@ module GitChain
 
           parent_branch = branches[i - 1].name
           if b.parent_branch != parent_branch
-            puts("Changing parent branch of #{b.name} from #{b.parent_branch} to #{parent_branch}") if b.parent_branch
+            GitChain::Logger.debug("Changing parent branch of #{b.name} from #{b.parent_branch} to #{parent_branch}") if b.parent_branch
             Git.set_config("branch.#{b.name}.parentBranch", parent_branch, scope: :local)
             b.parent_branch = parent_branch
           end
@@ -68,7 +68,7 @@ module GitChain
             parsed = Git.rev_parse(parent_branch)
             merge_base = Git.merge_base(parent_branch, b.name)
             unless parsed == merge_base
-              puts("#{b.name} is not currently branched from the tip of #{b.parent_branch}")
+              GitChain::Logger.debug("#{b.name} is not currently branched from the tip of #{b.parent_branch}")
             end
             branch_point = merge_base
           end
@@ -86,8 +86,8 @@ module GitChain
           Git.set_config("branch.#{b}.branchPoint", nil, scope: :local)
         end
 
-        puts "New: #{branch_names.join(' -> ')}"
-        puts "Removed: #{removed}"
+        GitChain::Logger.debug("New: #{branch_names.join(' -> ')}")
+        GitChain::Logger.debug("Removed: #{removed}")
       end
     end
   end

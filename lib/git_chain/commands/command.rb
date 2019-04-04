@@ -19,9 +19,8 @@ module GitChain
         options = options(args)
         run(options)
       rescue ArgError, OptionParser::ParseError => e
-        $stderr.puts(e.message)
-        $stderr.puts
-        $stderr.puts(usage)
+        GitChain::Logger.error(e.message)
+        GitChain::Logger.info(usage)
         raise(AbortSilentError)
       end
 

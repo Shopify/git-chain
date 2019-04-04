@@ -82,15 +82,15 @@ module GitChain
           case mode
           when :insert
             if is_last
-              puts("Appending #{branch_name} at the end of chain #{chain.name}")
+              GitChain::Logger.debug("Appending #{branch_name} at the end of chain #{chain.name}")
               branch_names << branch_name
             else
-              puts("Inserting #{branch_name} in chain #{chain.name}")
+              GitChain::Logger.debug("Inserting #{branch_name} in chain #{chain.name}")
               index = branch_names.index(start_point)
               branch_names.insert(index + 1, branch_name)
             end
           when :new
-            puts("Starting a new chain from #{start_point}")
+            GitChain::Logger.debug("Starting a new chain from #{start_point}")
             branch_names = [start_point, branch_name]
           else
             raise("Invalid mode: #{mode}")

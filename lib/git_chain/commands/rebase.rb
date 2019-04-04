@@ -19,7 +19,7 @@ module GitChain
         chain = GitChain::Models::Chain.from_config(options[:chain_name])
         raise(AbortError, "Chain '#{Git.chain}' does not exist.") if chain.empty?
 
-        puts "Rebasing the following branches: #{chain.branch_names}"
+        GitChain::Logger.info("Rebasing the following branches: #{chain.branch_names}")
 
         branches_to_rebase = chain.branches[1..-1]
 
@@ -37,8 +37,8 @@ module GitChain
             Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
             # validate the parameters
           rescue GitChain::Git::Failure => e
-            puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
-              "Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}"
+            GitChain::Logger.error("Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
+              "Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}")
           end
         end
       end

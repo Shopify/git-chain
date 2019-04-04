@@ -6,22 +6,21 @@ module GitChain
       def call(args)
         name = args.shift
         unless name
-          puts(usage)
+          GitChain::Logger.info(usage)
           return 0
         end
 
         cmd = commands[name]
         unless cmd
-          $stderr.puts("Unknown command: #{name}")
-          $stderr.puts
-          $stderr.puts(usage)
+          GitChain::Logger.error("Unknown command: #{name}")
+          GitChain::Logger.info(usage)
           raise(AbortSilentError)
         end
 
         cmd.new.call(args)
         0
       rescue AbortError => e
-        $stderr.puts(e.message)
+        GitChain::Logger.error(e.message)
         1
       rescue AbortSilentError
         1
@@ -37,7 +36,7 @@ module GitChain
         column_size = table.keys.map(&:size).max
 
         <<~EOS
-          Usage:
+          Usage: {{bold:Available commands}}
             #{PRELUDE} <command>
 
           Commands:
