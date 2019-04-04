@@ -26,18 +26,20 @@ module GitChain
         raise(AbortError, "No branches to rebase for chain '#{chain_name}'.") if branches_to_rebase.empty?
 
         branches_to_rebase.each do |branch|
-          parent_sha = Git.rev_parse(branch.parent_branch)
+          begin
+            parent_sha = Git.rev_parse(branch.parent_branch)
 
-          if forwardable_branch_point?(branch)
-            Git.set_config("branch.#{branch.name}.branchPoint", parent_sha)
+            if forwardable_branch_point?(branch)
+              Git.set_config("branch.#{branch.name}.branchPoint", parent_sha)
+            end
+
+            Git.exec("rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name)
+            Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
+            # validate the parameters
+          rescue GitChain::Git::Failure => e
+            puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
+              "Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}"
           end
-
-          Git.exec("rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name)
-          Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
-          # validate the parameters
-        rescue GitChain::Git::Failure => e
-          puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
-            "Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}"
         end
       end
 
