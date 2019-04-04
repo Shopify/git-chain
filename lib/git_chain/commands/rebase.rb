@@ -38,7 +38,9 @@ module GitChain
             # validate the parameters
           rescue GitChain::Git::Failure => e
             GitChain::Logger.error("Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
-              "Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}")
+              "Fix the rebase and run 'git chain rebase' again.")
+            GitChain::Logger.info(e.message)
+            return
           end
         end
       end
