@@ -34,6 +34,8 @@ module GitChain
           current_parent = nil
           until remaining.empty?
             node = remaining.find { |branch| branch.parent_branch == current_parent }
+            raise(AbortError, "Branch #{current_parent} is not connected to the rest of the chain") unless node
+
             sorted << node
             remaining.delete(node)
             current_parent = node.name
