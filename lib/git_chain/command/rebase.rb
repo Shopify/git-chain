@@ -10,6 +10,10 @@ module GitChain
       end
 
       def run(options)
+        if Git.rebase_in_progress?
+          raise(AbortError, "A rebase is in progress. Please finish the rebase first and run 'git chain rebase' after.")
+        end
+
         raise(AbortError, "Current branch '#{Git.current_branch}' is not in a chain.") unless options[:chain_name]
 
         chain = GitChain::Model::Chain.from_config(options[:chain_name])
@@ -33,8 +37,7 @@ module GitChain
             Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
             # validate the parameters
           rescue GitChain::Git::Failure => e
-            puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. Aborting rebase.\nError: #{e.message}"
-            Git.exec("rebase", "--abort")
+            puts "Cannot merge #{branch.name} onto #{branch.parent_branch}. Fix the rebase and run 'git chain rebase' again.\n\n#{e.message}"
             return
           end
         end

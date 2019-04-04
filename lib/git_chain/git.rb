@@ -93,6 +93,11 @@ module GitChain
         current_vals.lines.map(&:strip)
       end
 
+      def rebase_in_progress?(dir: nil)
+        dir ||= ".git"
+        File.exists?(File.expand_path(File.join(dir, "REBASE_HEAD")))
+      end
+
       private
 
       def git_config(*config_args, scope: nil, dir: nil)
