@@ -18,7 +18,7 @@ module GitChain
       self.class.command_name
     end
 
-    def call(args)
+    def call(args = [])
       options = options(args)
       run(options)
     rescue CommandArgError, OptionParser::ParseError => e
