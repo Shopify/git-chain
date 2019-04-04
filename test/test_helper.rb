@@ -6,6 +6,9 @@ require 'git_chain'
 require 'minitest'
 require 'mocha/mini_test'
 require "minitest/autorun"
+require 'minitest/reporters'
+
+# MiniTest::Reporters.use!
 
 require 'tmpdir'
 require 'fileutils'

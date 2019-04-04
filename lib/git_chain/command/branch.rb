@@ -17,6 +17,14 @@ module GitChain
         opts.on("-n", "--name=NAME", "Chain name") do |name|
           options[:chain_name] = name
         end
+
+        opts.on("-i", "--insert", "Insert in the middle of a chain instead of starting a new one") do
+          options[:mode] = :insert
+        end
+
+        opts.on("--new", "Start a new chain instead of continuing the existing one") do
+          options[:mode] = :new
+        end
       end
 
       def run(options)
@@ -50,10 +58,28 @@ module GitChain
         branch_names = chain.branch_names
 
         if branch_names.empty?
+          raise(AbortError, "Unable to insert, #{chain_name} does not exist yet") if options[:mode] == :insert
           branch_names << start_point << branch_name
         else
-          index = branch_names.index(start_point)
-          branch_names.insert(index + 1, branch_name)
+          is_last = branch_names.last == start_point
+          mode = options[:mode] || (is_last ? :insert : :new)
+
+          case mode
+          when :insert
+            if is_last
+              puts("Appending #{branch_name} at the end of chain #{chain.name}")
+              branch_names << branch_name
+            else
+              puts("Inserting #{branch_name} in chain #{chain.name}")
+              index = branch_names.index(start_point)
+              branch_names.insert(index + 1, branch_name)
+            end
+          when :new
+            puts("Starting a new chain from #{start_point}")
+            branch_names = [start_point, branch_name]
+          else
+            raise("Invalid mode: #{mode}")
+          end
         end
 
         begin
