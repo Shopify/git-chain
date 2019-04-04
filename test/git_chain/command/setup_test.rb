@@ -22,7 +22,7 @@ module GitChain
           Setup.new.call(%w(-n default master a b c))
 
           chain = Model::Chain.from_config('default')
-          assert_equal(%w(master a b c), chain.branches.map(&:name))
+          assert_equal(%w(master a b c), chain.branch_names)
           chain.branches.each_with_index do |b, i|
             if i == 0
               assert_nil(b.parent_branch)
