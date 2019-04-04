@@ -46,10 +46,9 @@ module GitChain
         nil
       end
 
-      def upstream_branch(dir: nil)
-        branch = exec('rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}', dir: dir)
-        match = branch.match(%r{\Aorigin/(.+)\n\z})
-        match && match[1]
+      # 'origin/foo/bar'
+      def upstream_branch(branch: '', dir: nil)
+        exec('rev-parse', '--abbrev-ref', '--symbolic-full-name', "#{branch}@{u}", dir: dir)
       rescue Failure
         nil
       end
