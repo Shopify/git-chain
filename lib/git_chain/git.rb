@@ -54,8 +54,8 @@ module GitChain
         nil
       end
 
-      def merge_base(a, b, dir: nil)
-        exec('merge-base', a, b, dir: dir)
+      def merge_base(commit, *commits, dir: nil)
+        exec('merge-base', commit, *commits, dir: dir)
       rescue
         nil
       end

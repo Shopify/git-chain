@@ -13,6 +13,15 @@ module GitChain
         end
       end
 
+      def test_orphan
+        with_test_repository('orphan') do
+          err = assert_raises(AbortError) do
+            Setup.new.call(%w(a b))
+          end
+          assert_equal("Branches are not all connected", err.message)
+        end
+      end
+
       def test_setup
         with_test_repository('a-b-c') do
           before = Model::Chain.from_config('default')

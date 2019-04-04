@@ -22,11 +22,13 @@ module GitChain
       end
 
       def run(options)
-        current_branches = Git.branches
         branch_names = options[:args]
-        missing = branch_names - current_branches
 
-        raise(AbortError, "Branch does not exist: #{missing.join(', ')}") unless missing.empty?
+        unless (missing = branch_names - Git.branches).empty?
+          raise(AbortError, "Branch does not exist: #{missing.join(', ')}")
+        end
+
+        raise(AbortError, "Branches are not all connected") if Git.merge_base(*branch_names).nil?
 
         $stderr.puts("Setting up chain #{options[:chain_name]}")
 
