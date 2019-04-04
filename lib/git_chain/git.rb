@@ -37,7 +37,7 @@ module GitChain
           .map { |lines| [parse_branch_name(lines.shift), *lines] }
           .to_h
       rescue Failure
-        []
+        {}
       end
 
       def current_branch(dir: nil)
