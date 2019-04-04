@@ -1,0 +1,74 @@
+#!/usr/bin/ruby --disable-gems
+
+require 'open3'
+require 'fileutils'
+
+def bail(msg)
+  $stderr.puts("[ERROR] #{msg}")
+  exit(1)
+end
+
+def warn(msg)
+  $stderr.puts("[WARNING] #{msg}")
+end
+
+deps = {
+  'cli-ui' => 'lib',
+  'cli-kit' => 'lib',
+}
+
+deps.each do |dep, copy_path|
+  path = File.expand_path(dep, '~/src/github.com/Shopify')
+
+  unless Dir.exist?(path)
+    bail("dependency is not checked out: #{dep} {{bold:{{blue:(try {{green:dev clone}})}}}}")
+  end
+
+  head_sha = nil
+  dirty = false
+
+  Dir.chdir(path) do
+    _, _, stat = Open3.capture3('git fetch origin master')
+    bail("couldn't git fetch in dependency: #{dep}") unless stat.success?
+
+    head_sha, stat = Open3.capture2('git rev-parse HEAD')
+    bail("couldn't determine HEAD: #{dep}") unless stat.success?
+    head_sha.chomp!
+
+    fetch_head_sha, stat = Open3.capture2('git rev-parse FETCH_HEAD')
+    bail("couldn't determine FETCH_HEAD: #{dep}") unless stat.success?
+    fetch_head_sha.chomp!
+
+    git_status, stat = Open3.capture2('git status --porcelain')
+    bail("couldn't determine git status: #{dep}") unless stat.success?
+
+    if head_sha != fetch_head_sha
+      warn(
+        "Copied files from #{path} to satisfy dependency #{dep}.\n" \
+        "  However, the repo at #{path} isn't up to date.\n" \
+        "  The checked-out revision is #{head_sha[0..8]}, and "\
+        "origin/master is #{fetch_head_sha[0..8]}.\n" \
+        "  Unless you know what you're doing, you should 'dev cd #{dep} && git pull', then run this again."
+      )
+    end
+
+    unless git_status.chomp.empty?
+      dirty = true
+      warn("importing uncommitted changes from dependency: #{dep}")
+    end
+  end
+
+  depdir = File.expand_path("../../vendor/deps/#{dep}", __FILE__)
+  FileUtils.rm_rf(depdir)
+  FileUtils.mkdir_p(depdir)
+  dst = File.expand_path(copy_path, depdir)
+  src = File.expand_path(copy_path, path)
+
+  FileUtils.cp_r(src, dst)
+
+  rev = head_sha
+  rev << " (dirty)" if dirty
+  rev << "\n"
+
+  File.write("#{depdir}/REVISION", rev)
+end

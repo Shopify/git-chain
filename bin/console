@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-lib_path = File.expand_path("../../lib", __FILE__)
-$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
+require File.expand_path('../../vendor/bootstrap.rb', __FILE__)
+require 'git_chain'
 
 require "irb"
 require "irb/completion"
 require 'irb/ext/save-history'
-require 'git_chain'
 
 IRB_HISTORY_SIZE = 100
 IRB_HISTORY_FILE = File.expand_path('../../.console_history', __FILE__)
