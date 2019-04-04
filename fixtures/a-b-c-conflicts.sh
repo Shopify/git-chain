@@ -13,7 +13,7 @@ for b in master a b c; do
 
     git config "branch.$b.chain" default
     if [ ! -z "$PREV" ]; then
-        git config "branch.$b.branchParent" $PREV
+        git config "branch.$b.parentBranch" $PREV
     fi
 
     PREV=$b
