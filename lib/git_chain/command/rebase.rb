@@ -22,8 +22,9 @@ module GitChain
 
         branches_to_rebase.each do |branch|
           Git.exec("rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name)
+          parent_sha = Git.rev_parse(branch.parent_branch)
+          Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
           # validate the parameters
-          # update the branch points
         end
       end
     end
