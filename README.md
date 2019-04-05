@@ -144,3 +144,6 @@ Edit a pull request:
 Setting the base branch:
 
 ![Edit pull request base](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header_edit.png)
+
+Once this is done and all remotes are set you can push all branches in a chain using `git chain push`.
+
