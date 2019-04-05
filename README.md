@@ -1,8 +1,8 @@
-# Git Chain Rebase
+# Git Chain
 
 Tool to rebase multiple Git branches based on the previous one.
 
-## What does Git Chain Rebase do?
+## What does Git Chain do?
 
 If you're working on a larger feature that you want to ship in smaller, easier reviewable pull requests, there's a big chance
 that you're creating separate branches for each of them. If the changes don't depend on each other – congratulations 🎉! 
@@ -49,11 +49,11 @@ looks like this:
 Getting back to the linear git history requires you to manually rebase all branches on top of each other, i.e the `database`
 branch onto `master`, the `model` branch onto `database` and the `ui` branch on top of `model`.
 
-Let's automate this using Git Chain Rebase.
+Let's automate this using Git Chain.
 
 ### Setting up a chain
 
-Git Chain Rebase first needs to learn about the intended branch order. We call this a 'branch chain'. You can create one using
+Git Chain first needs to learn about the intended branch order. We call this a 'branch chain'. You can create one using
 the `git chain` command.
 
 ```
@@ -75,7 +75,7 @@ $ git chain rebase
 Rebasing the following branches: ["master", "feature-database", "feature-model", "feature-ui"]
 ```
 
-Git Chain Rebase detects the current chain based on the branch you're currently on (a branch can only be part of one chain). You can
+Git Chain detects the current chain based on the branch you're currently on (a branch can only be part of one chain). You can
 specify a chain explicitly by using the `-n` option you already saw during setup.
 
 ```
@@ -99,10 +99,10 @@ After that you'll end up with a clean history:
 * f6ba0e9 master.1
 ```
 
-### Handling conflicts
+## Handling conflicts
 
 Of course, not everything will be as easy as in this idealized case. You'll certainly end up in situations where the rebase 
-operations won't apply cleanly and you need to resolve merge conflicts. Git Chain Rebase stops when a rebase fails and
+operations won't apply cleanly and you need to resolve merge conflicts. Git Chain stops when a rebase fails and
 leaves the repository at that state. You'll have to manually resolve the conflict, finish the current rebase and invoke
 `git chain rebase` again to continue.
 
@@ -120,5 +120,22 @@ Let's look at another example which contains conflicting changes.
 The rebase of branch `a` onto `master` will work but `b` will have a conflict when rebased on `a`.
 
 ```
-$ 
+$ git chain rebase
+Rebasing the following branches: ["master", "a", "b", "c"]
+Cannot merge b onto a. Fix the rebase and run 'git chain rebase' again. 
+...
+
+[...resolving the conflict...]
+$ git rebase --continue
+Successfully rebased and updated refs/heads/b.
+$ git chain rebase
+Rebasing the following branches: ["master", "a", "b", "c"]
 ```
+
+## Pushing chains to GitHub pull requests
+
+GitHub supports setting a base branch of a pull request via the user interface. You'll need to do this for all branches
+in a chain manually for now.
+
+![Pull request header](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header.png)
+![Edit pull request base](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header_edit.png)
