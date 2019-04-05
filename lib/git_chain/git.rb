@@ -53,6 +53,11 @@ module GitChain
         nil
       end
 
+      def ancestor?(a, b)
+        _, _, stat = capture3(['merge-base', '--is-ancestor', a, b], dir: dir)
+        stat.success?
+      end
+
       def merge_base(commit, *commits, dir: nil)
         exec('merge-base', commit, *commits, dir: dir)
       rescue
