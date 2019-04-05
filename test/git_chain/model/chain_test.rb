@@ -6,25 +6,23 @@ module GitChain
       include RepositoryTestHelper
 
       def test_from_config
-        with_test_repository('a-b-c-chain') do
+        with_test_repository('a-b-chain') do
           chain = Chain.from_config('default')
           assert_equal('default', chain.name)
-          assert_equal(%w(master a b c), chain.branch_names)
+          assert_equal(%w(master a b), chain.branch_names)
         end
       end
 
       def test_sort
-        branches = {
-          master: Branch.new(name: "master"),
-          a: Branch.new(name: "a", parent_branch: "master"),
-          b: Branch.new(name: "b", parent_branch: "a"),
-          c: Branch.new(name: "c", parent_branch: "b"),
-        }
+        master = Branch.new(name: "master")
+        a = Branch.new(name: "a", parent_branch: "master")
+        b = Branch.new(name: "b", parent_branch: "a")
 
-        unsorted = [branches[:master], branches[:a], branches[:c], branches[:b]]
-        expected = [branches[:master], branches[:a], branches[:b], branches[:c]]
+        expected = [master, a, b]
 
-        assert_equal(expected, Chain.sort_branches(unsorted))
+        assert_equal(expected, Chain.sort_branches(expected))
+        assert_equal(expected, Chain.sort_branches([master, b, a]))
+        assert_equal(expected, Chain.sort_branches([a, master, b]))
       end
     end
   end

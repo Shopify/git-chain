@@ -6,7 +6,7 @@ module GitChain
       include RepositoryTestHelper
 
       def test_from_config
-        with_test_repository('a-b-c-chain') do
+        with_test_repository('a-b-chain') do
           branch = Branch.from_config('a')
           assert_equal('a', branch.name)
           assert_equal('master', branch.parent_branch)

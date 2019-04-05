@@ -6,9 +6,9 @@ module GitChain
       include RepositoryTestHelper
 
       def test_chain_noop
-        with_test_repository('a-b-c-chain') do
+        with_test_repository('a-b-chain') do
           chain = Models::Chain.from_config('default')
-          Setup.new.call(%w(master a b c))
+          Setup.new.call(%w(master a b))
           assert_equal(chain, Models::Chain.from_config('default'))
         end
       end

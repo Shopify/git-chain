@@ -6,7 +6,7 @@ module GitChain
       include RepositoryTestHelper
 
       def test_push_nothing
-        with_remote_test_repository('a-b-c-chain') do |remote_repo|
+        with_remote_test_repository('a-b-chain') do |remote_repo|
           assert_empty(Git.branches(dir: remote_repo))
 
           err = assert_raises(AbortError) do
@@ -17,24 +17,24 @@ module GitChain
       end
 
       def test_push_upstream
-        with_remote_test_repository('a-b-c-chain') do |remote_repo|
+        with_remote_test_repository('a-b-chain') do |remote_repo|
           assert_empty(Git.branches(dir: remote_repo))
 
           Push.new.call(['-u'])
-          assert_equal(%w(master a b c).sort, Git.branches(dir: remote_repo).sort)
+          assert_equal(%w(master a b).sort, Git.branches(dir: remote_repo).sort)
 
           assert_equal('test/master', Git.upstream_branch(branch: 'master'))
         end
       end
 
       def test_push_force_upstream
-        with_remote_test_repository('a-b-c-chain') do |remote_repo|
+        with_remote_test_repository('a-b-chain') do |remote_repo|
           assert_empty(Git.branches(dir: remote_repo))
 
           Push.new.call(['-u'])
-          assert_equal(%w(master a b c).sort, Git.branches(dir: remote_repo).sort)
+          assert_equal(%w(master a b).sort, Git.branches(dir: remote_repo).sort)
 
-          Git.exec('checkout', 'c')
+          Git.exec('checkout', 'b')
           Git.exec('commit', '--amend', '--allow-empty', '-m', 'test')
 
           err = assert_raises(AbortError) do
