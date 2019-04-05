@@ -11,7 +11,7 @@ You can simply base all branches on the master branch and work on them and merge
 But if your second branch depends on changes in the first and your third branch on changes in the second you'll end up
 doing a lot of manual rebases in case one of your base branches changes (e.g. because you addressed a comment in a review).
 
-Git Chain Rebase can help you with automating this task. You can create specify a chain of branches and rebase them all with a
+Git Chain can help you with automating this task. You can specify a chain of branches and rebase them all with a
 single command: `git chain rebase`.
 
  
