@@ -15,6 +15,10 @@ module GitChain
         opts.on("-u", "--set-upstream", "Set upstream to matching names, if not already set") do
           options[:set_upstream] = true
         end
+
+        opts.on("-f", "--force", "Use --force-with-lease when pushing") do
+          options[:force] = true
+        end
       end
 
       def run(options)
@@ -29,8 +33,8 @@ module GitChain
         chain.branch_names.each do |b|
           upstream = Git.upstream_branch(branch: b)
           if upstream
-            branch_remote, upstream_branch = upstream.split('/', 1)
-            if remote
+            branch_remote, upstream_branch = upstream.split('/', 2)
+            if remote && branch_remote != remote
               raise(AbortError, "Multiple remotes detected: #{remote}, #{branch_remote}") if remote != branch_remote
             else
               remote = branch_remote
@@ -48,7 +52,10 @@ module GitChain
 
         pairs = upstreams.map { |b, u| "#{b}:#{u}" }
 
-        Git.exec('push', remote, *pairs)
+        cmd = %w(git push)
+        cmd << '--force-with-lease' if options[:force]
+        cmd += [remote, *pairs]
+        raise(AbortError, "git push failed") unless system(*cmd)
 
         if options[:set_upstream]
           upstreams.each do |local, upstream|
