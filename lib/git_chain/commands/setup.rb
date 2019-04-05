@@ -58,7 +58,9 @@ module GitChain
 
           parent_branch = branches[i - 1].name
           if b.parent_branch != parent_branch
-            GitChain::Logger.debug("Changing parent branch of #{b.name} from #{b.parent_branch} to #{parent_branch}") if b.parent_branch
+            if b.parent_branch
+              GitChain::Logger.debug("Changing parent branch of #{b.name} from #{b.parent_branch} to #{parent_branch}")
+            end
             Git.set_config("branch.#{b.name}.parentBranch", parent_branch, scope: :local)
             b.parent_branch = parent_branch
           end

@@ -4,4 +4,4 @@ inherit_from:
 AllCops:
   Exclude:
     - 'vendor/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.3

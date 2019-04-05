@@ -19,13 +19,15 @@ module RepositoryTestHelper
     setup_script = File.expand_path("../../fixtures/#{fixture_name}.sh", __FILE__)
 
     Dir.mktmpdir('git-chain-rebase') do |dir|
-      Dir.chdir(dir)
-      _, err, stat = Open3.capture3(setup_script)
-      raise "Cannot setup git repository using #{setup_script}: #{err}" unless stat.success?
+      begin
+        Dir.chdir(dir)
+        _, err, stat = Open3.capture3(setup_script)
+        raise "Cannot setup git repository using #{setup_script}: #{err}" unless stat.success?
 
-      yield
-    ensure
-      Dir.chdir(previous_dir) if previous_dir
+        yield
+      ensure
+        Dir.chdir(previous_dir) if previous_dir
+      end
     end
   end
 end

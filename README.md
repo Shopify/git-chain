@@ -14,6 +14,20 @@ doing a lot of manual rebases in case one of your base branches changes (e.g. be
 Git Chain can help you with automating this task. You can specify a chain of branches and rebase them all with a
 single command: `git chain rebase`.
 
+## Requirements
+
+- Git (of course)
+- System Ruby (`/usr/bin/ruby -v >= 2.3.7`) 
+
+## Installation
+
+```sh
+$ git clone https://github.com/Shopify/git-chain /usr/local/share/git-chain # Or any folder you see fit
+$ ln -sv /usr/local/share/git-chain/bin/git-chain /usr/local/bin/ # Or any location in your PATH
+
+$ git chain # Should now work
+```
+
  
 ## Example
 

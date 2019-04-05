@@ -40,7 +40,7 @@ module GitChain
             GitChain::Logger.error("Cannot merge #{branch.name} onto #{branch.parent_branch}. "\
               "Fix the rebase and run 'git chain rebase' again.")
             GitChain::Logger.info(e.message)
-            return
+            break
           end
         end
       end

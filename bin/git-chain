@@ -1,6 +1,6 @@
 #!/usr/bin/ruby --disable-gems
 
-require File.expand_path('../../vendor/bootstrap.rb', __FILE__)
+require File.expand_path('../../vendor/bootstrap.rb', File.realpath(__FILE__))
 require 'git_chain'
 
 exit(GitChain::EntryPoint.call(ARGV.dup))
