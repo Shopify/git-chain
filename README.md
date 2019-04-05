@@ -137,5 +137,10 @@ Rebasing the following branches: ["master", "a", "b", "c"]
 GitHub supports setting a base branch of a pull request via the user interface. You'll need to do this for all branches
 in a chain manually for now.
 
+Edit a pull request:
+
 ![Pull request header](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header.png)
+
+Setting the base branch:
+
 ![Edit pull request base](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header_edit.png)
