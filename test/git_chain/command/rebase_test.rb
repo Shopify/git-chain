@@ -17,7 +17,7 @@ module GitChain
     end
 
     def test_conflict
-      with_test_repository("a-b-c-conflicts") do
+      with_test_repository("a-b-conflicts") do
         Commands::Rebase.new.run(chain_name: "default")
 
         Git.exec('add', '.')
@@ -28,23 +28,19 @@ module GitChain
 
         assert_equal(Git.rev_parse("master"), Git.merge_base("master", "a"))
         assert_equal(Git.rev_parse("a"), Git.merge_base("a", "b"))
-        assert_equal(Git.rev_parse("b"), Git.merge_base("b", "c"))
 
         assert_equal(Git.rev_parse("master"), Git.get_config("branch.a.branchPoint"))
         assert_equal(Git.rev_parse("a"), Git.get_config("branch.b.branchPoint"))
-        assert_equal(Git.rev_parse("b"), Git.get_config("branch.c.branchPoint"))
         assert_equal(Git.rev_parse("master"), Git.merge_base("master", "a"))
         assert_equal(Git.rev_parse("a"), Git.merge_base("a", "b"))
-        assert_equal(Git.rev_parse("b"), Git.merge_base("b", "c"))
 
         assert_equal(Git.rev_parse("master"), Git.get_config("branch.a.branchPoint"))
         assert_equal(Git.rev_parse("a"), Git.get_config("branch.b.branchPoint"))
-        assert_equal(Git.rev_parse("b"), Git.get_config("branch.c.branchPoint"))
       end
     end
 
     def test_rebase_in_progress
-      with_test_repository("a-b-c-conflicts") do
+      with_test_repository("a-b-conflicts") do
         %x(git rebase --onto a b^ b)
         exception = assert_raises(AbortError) do
           Commands::Rebase.new.call

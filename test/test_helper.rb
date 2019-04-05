@@ -14,7 +14,7 @@ require 'tempfile'
 require 'open3'
 
 module RepositoryTestHelper
-  def with_test_repository(fixture_name = 'a-b-c')
+  def with_test_repository(fixture_name = 'a-b')
     previous_dir = Dir.pwd
     setup_script = File.expand_path("../../fixtures/#{fixture_name}.sh", __FILE__)
 
