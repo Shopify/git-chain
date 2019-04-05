@@ -28,6 +28,9 @@ $ ln -sv /usr/local/share/git-chain/bin/git-chain /usr/local/bin/ # Or any locat
 $ git chain # Should now work
 ```
 
+## Demo
+
+![Demo recording](docs/demo.gif)
  
 ## Example
 
@@ -153,11 +156,10 @@ in a chain manually for now.
 
 Edit a pull request:
 
-![Pull request header](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header.png)
+![Pull request header](docs/screenshot_pr_header.png)
 
 Setting the base branch:
 
-![Edit pull request base](https://github.com/Shopify/git-chain/blob/master/docs/screenshot_pr_header_edit.png)
+![Edit pull request base](docs/screenshot_pr_header_edit.png)
 
 Once this is done and all remotes are set you can push all branches in a chain using `git chain push`.
-
