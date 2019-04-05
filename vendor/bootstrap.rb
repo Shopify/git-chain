@@ -9,3 +9,5 @@ end
 
 require 'cli/ui'
 require 'cli/kit'
+
+CLI::UI::StdoutRouter.enable

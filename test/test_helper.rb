@@ -7,6 +7,7 @@ require "minitest/autorun"
 require 'minitest/reporters'
 
 MiniTest::Reporters.use!
+CLI::UI.enable_color = true
 
 require 'tmpdir'
 require 'fileutils'
@@ -28,6 +29,16 @@ module RepositoryTestHelper
       ensure
         Dir.chdir(previous_dir) if previous_dir
       end
+    end
+  end
+end
+
+module Minitest
+  class Test
+    def capture_io(&block)
+      cap = CLI::UI::StdoutRouter::Capture.new(with_frame_inset: true, &block)
+      cap.run
+      [cap.stdout, cap.stderr]
     end
   end
 end
