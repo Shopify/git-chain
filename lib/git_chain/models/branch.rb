@@ -4,6 +4,7 @@ module GitChain
       attr_accessor :name, :chain_name, :parent_branch, :branch_point
 
       def initialize(name:, chain_name: nil, parent_branch: nil, branch_point: nil)
+        super()
         @name = name
         @chain_name = chain_name
         @parent_branch = parent_branch

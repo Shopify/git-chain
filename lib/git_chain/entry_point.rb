@@ -3,6 +3,8 @@ module GitChain
     PRELUDE = "git chain"
 
     class << self
+      include Util::Output
+
       def call(args)
         name = args.shift
         unless name
@@ -12,17 +14,17 @@ module GitChain
 
         cmd = commands[name]
         unless cmd
-          GitChain::Logger.error("Unknown command: #{name}")
-          GitChain::Logger.info(usage)
-          raise(AbortSilentError)
+          puts_warning("Unknown command: #{name}")
+          puts(usage)
+          raise(AbortSilent)
         end
 
         cmd.new.call(args)
         0
-      rescue AbortError => e
-        GitChain::Logger.error(e.message)
+      rescue Abort => e
+        puts_error(e.message)
         1
-      rescue AbortSilentError
+      rescue AbortSilent
         1
       end
 
@@ -36,10 +38,10 @@ module GitChain
         column_size = table.keys.map(&:size).max
 
         <<~EOS
-          Usage: {{bold:Available commands}}
-            #{PRELUDE} <command>
+          {{bold:Usage:}}
+            {{command:#{PRELUDE}}} {{info:<command>}}
 
-          Commands:
+          {{bold:Available commands:}}
           #{table.map { |banner, desc| "  #{format("%-#{column_size}s", banner)}   #{desc}" }.join("\n")}
         EOS
       end

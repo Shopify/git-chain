@@ -25,17 +25,20 @@ module GitChain
         branch_names = options[:args]
 
         unless (missing = branch_names - Git.branches).empty?
-          raise(AbortError, "Branch does not exist: #{missing.join(', ')}")
+          raise(Abort, "Branch does not exist: #{missing.join(', ')}")
         end
 
-        raise(AbortError, "Branches are not all connected") if Git.merge_base(*branch_names).nil?
+        raise(Abort, "Branches are not all connected") if Git.merge_base(*branch_names).nil?
 
-        GitChain::Logger.info("Setting up chain #{options[:chain_name]}")
+        puts_debug("Setting up chain #{options[:chain_name]}")
 
         chain = Models::Chain.from_config(options[:chain_name])
         chain_branch_names = chain.branch_names
 
         branches = branch_names.each_with_index.map do |b, i|
+          previous = i == 0 ? [] : branch_names.first(i)
+          raise(Abort, "#{b} cannot be part of the chain multiple times") if previous.include?(b)
+
           current = chain.branches[i]
           if current&.name == b
             current
@@ -49,7 +52,7 @@ module GitChain
 
           unless b.chain_name == chain.name
             if b.chain_name
-              raise(AbortError, "Branch #{b.name} is currently attached to chain #{b.chain_name}")
+              raise(Abort, "Branch #{b.name} is currently attached to chain #{b.chain_name}")
             else
               Git.set_config("branch.#{b.name}.chain", chain.name, scope: :local)
               b.chain_name = chain.name
@@ -76,7 +79,7 @@ module GitChain
           end
 
           next unless b.branch_point != branch_point
-          raise(AbortError, "Branch #{b.name} is currently based on #{b.branch_point}") unless branch_point
+          raise(Abort, "Branch #{b.name} is currently based on #{b.branch_point}") unless branch_point
           Git.set_config("branch.#{b.name}.branchPoint", branch_point, scope: :local)
           b.branch_point = branch_point
         end
@@ -88,8 +91,12 @@ module GitChain
           Git.set_config("branch.#{b}.branchPoint", nil, scope: :local)
         end
 
-        GitChain::Logger.debug("New: #{branch_names.join(' -> ')}")
-        GitChain::Logger.debug("Removed: #{removed}")
+        unless removed.empty?
+          puts_warning("Removed #{removed.map { |b| "{{info:#{b}}}" }.join(', ')} from the chain.")
+        end
+
+        log_names = branch_names.map { |b| "{{cyan:#{b}}}" }.join(' -> ')
+        puts_success("Configured chain {{info:#{chain.name}}} {{reset:[#{log_names}]}}")
       end
     end
   end

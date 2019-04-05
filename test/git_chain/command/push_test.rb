@@ -9,7 +9,7 @@ module GitChain
         with_remote_test_repository('a-b-chain') do |remote_repo|
           assert_empty(Git.branches(dir: remote_repo))
 
-          err = assert_raises(AbortError) do
+          err = assert_raises(Abort) do
             Push.new.call
           end
           assert_equal("Nothing to push", err.message)
@@ -37,7 +37,7 @@ module GitChain
           Git.exec('checkout', 'b')
           Git.exec('commit', '--amend', '--allow-empty', '-m', 'test')
 
-          err = assert_raises(AbortError) do
+          err = assert_raises(Abort) do
             Push.new.call
           end
           assert_equal("git push failed", err.message)

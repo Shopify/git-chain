@@ -2,7 +2,7 @@
 
 TYPE_DELAY=0.06
 EOL_DELAY=1
-PROMPT="\x1B[0;32m\$\x1B[0m"
+PROMPT="\x1B[0;35m\$\x1B[0m"
 
 type() {
   args=$1
@@ -30,7 +30,7 @@ type() {
 }
 
 comment() {
-  echo -e "\x1B[94m𝒾\x1B[0;36m$1\x1B[0m"
+  echo -e "–-– \x1B[0;36m$1\x1B[0m –––"
   sleep $EOL_DELAY
 }
 

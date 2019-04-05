@@ -15,10 +15,22 @@ module GitChain
 
       def test_orphan
         with_test_repository('orphan') do
-          err = assert_raises(AbortError) do
+          err = assert_raises(Abort) do
             Setup.new.call(%w(a b))
           end
           assert_equal("Branches are not all connected", err.message)
+        end
+      end
+
+      def test_branches_dupes
+        with_test_repository('a-b') do
+          [%w(b b), %w(a b b)].each do |branches|
+            err = assert_raises(Abort) do
+              Setup.new.call(branches)
+            end
+
+            assert_equal("b cannot be part of the chain multiple times", err.message)
+          end
         end
       end
 

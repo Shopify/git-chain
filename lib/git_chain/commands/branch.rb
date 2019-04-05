@@ -31,7 +31,7 @@ module GitChain
         case options[:args].size
         when 1
           start_point = Git.current_branch
-          raise(AbortError, "You are not currently on any branch") unless start_point
+          raise(Abort, "You are not currently on any branch") unless start_point
           branch_name = options[:args][0]
         when 2
           start_point, branch_name = options[:args]
@@ -39,7 +39,7 @@ module GitChain
           raise(ArgError, "Expected 1 or 2 arguments")
         end
 
-        raise(AbortError, "#{start_point} is not a branch") if Git.exec('branch', '--list', start_point).empty?
+        raise(Abort, "#{start_point} is not a branch") if Git.exec('branch', '--list', start_point).empty?
 
         [start_point, branch_name]
       end
@@ -73,7 +73,7 @@ module GitChain
         branch_names = chain.branch_names
 
         if branch_names.empty?
-          raise(AbortError, "Unable to insert, #{chain_name} does not exist yet") if options[:mode] == :insert
+          raise(Abort, "Unable to insert, #{chain_name} does not exist yet") if options[:mode] == :insert
           branch_names << start_point << branch_name
         else
           is_last = branch_names.last == start_point
@@ -82,15 +82,15 @@ module GitChain
           case mode
           when :insert
             if is_last
-              GitChain::Logger.debug("Appending #{branch_name} at the end of chain #{chain.name}")
+              puts_info("Appending {{info:#{branch_name}}} at the end of chain {{info:#{chain.name}}}")
               branch_names << branch_name
             else
-              GitChain::Logger.debug("Inserting #{branch_name} in chain #{chain.name}")
+              puts_info("Inserting {{info:#{branch_name}}} before {{info:#{start_point}}} in chain #{chain.name}")
               index = branch_names.index(start_point)
               branch_names.insert(index + 1, branch_name)
             end
           when :new
-            GitChain::Logger.debug("Starting a new chain from #{start_point}")
+            puts_info("Starting a new chain {{info:#{chain.name} from #{start_point}")
             branch_names = [start_point, branch_name]
           else
             raise("Invalid mode: #{mode}")
@@ -100,7 +100,7 @@ module GitChain
         begin
           Git.exec('checkout', start_point, '-B', branch_name)
         rescue Git::Failure => e
-          raise(AbortError, e)
+          raise(Abort, e)
         end
 
         Setup.new.call(['--chain', chain.name, *branch_names])

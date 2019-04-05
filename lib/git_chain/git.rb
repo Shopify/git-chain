@@ -4,7 +4,7 @@ module GitChain
   class Git
     class Failure < StandardError
       def initialize(args, err)
-        super("git #{args} failed: \n#{err}")
+        super("git #{args.join(' ')} failed: \n#{err}")
       end
     end
 

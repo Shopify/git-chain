@@ -3,6 +3,8 @@ require 'optparse'
 module GitChain
   module Commands
     class Command
+      include Util::Output
+
       def self.command_name
         @command_name ||= name.split('::')
           .last
@@ -21,7 +23,7 @@ module GitChain
       rescue ArgError, OptionParser::ParseError => e
         GitChain::Logger.error(e.message)
         GitChain::Logger.info(usage)
-        raise(AbortSilentError)
+        raise(AbortSilent)
       end
 
       def run(_options)
@@ -34,7 +36,7 @@ module GitChain
       end
 
       def banner
-        "#{command_name} #{banner_options}"
+        "{{command:#{command_name}}} {{info:#{banner_options}}}"
       end
 
       def banner_options
@@ -61,7 +63,7 @@ module GitChain
         options = default_options
 
         parser = OptionParser.new do |opts|
-          opts.banner = "Usage: #{EntryPoint::PRELUDE} #{banner}"
+          opts.banner = "{{bold:Usage:}} {{command:#{EntryPoint::PRELUDE}}} #{banner}"
           configure_option_parser(opts, options)
         end
 

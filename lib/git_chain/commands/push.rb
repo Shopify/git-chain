@@ -22,10 +22,10 @@ module GitChain
       end
 
       def run(options)
-        raise(AbortError, "Not currently on a chain") unless options[:chain_name]
+        raise(Abort, "Not currently on a chain") unless options[:chain_name]
 
         chain = Models::Chain.from_config(options[:chain_name])
-        raise(AbortError, "Chain #{options[:chain_name]} does not exist") if chain.empty?
+        raise(Abort, "Chain #{options[:chain_name]} does not exist") if chain.empty?
 
         remote = nil
         upstreams = {}
@@ -35,7 +35,7 @@ module GitChain
           if upstream
             branch_remote, upstream_branch = upstream.split('/', 2)
             if remote && branch_remote != remote
-              raise(AbortError, "Multiple remotes detected: #{remote}, #{branch_remote}") if remote != branch_remote
+              raise(Abort, "Multiple remotes detected: #{remote}, #{branch_remote}") if remote != branch_remote
             else
               remote = branch_remote
             end
@@ -45,21 +45,26 @@ module GitChain
           end
         end
 
-        raise(AbortError, "Nothing to push") if upstreams.empty?
+        raise(Abort, "Nothing to push") if upstreams.empty?
 
         remote ||= Git.exec("remote").split("\n").first
-        raise(AbortError, "No remote configured") unless remote
+        raise(Abort, "No remote configured") unless remote
 
         pairs = upstreams.map { |b, u| "#{b}:#{u}" }
 
         cmd = %w(git push)
         cmd << '--force-with-lease' if options[:force]
         cmd += [remote, *pairs]
-        raise(AbortError, "git push failed") unless system(*cmd)
+
+        puts_info("Pushing {{info:#{pairs.size}}} branch#{pairs.size > 1 ? 'es' : ''} to #{remote}")
+        puts_debug(cmd.join(" "))
+        raise(Abort, "git push failed") unless system(*cmd)
 
         if options[:set_upstream]
           upstreams.each do |local, upstream|
-            Git.exec('branch', "--set-upstream-to=#{remote}/#{upstream}", local)
+            args = ['branch', "--set-upstream-to=#{remote}/#{upstream}", local]
+            puts_debug_git(*args)
+            Git.exec(*args)
           end
         end
       end

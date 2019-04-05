@@ -18,6 +18,9 @@ module GitChain
   autoload :Options, 'git_chain/options'
   autoload :Util, 'git_chain/util'
 
-  AbortSilentError = Class.new(RuntimeError)
-  AbortError = Class.new(RuntimeError)
+  GenericAbort = CLI::Kit::GenericAbort
+  Abort        = CLI::Kit::Abort
+  Bug          = CLI::Kit::Bug
+  BugSilent    = CLI::Kit::BugSilent
+  AbortSilent  = CLI::Kit::AbortSilent
 end
