@@ -57,11 +57,11 @@ Git Chain first needs to learn about the intended branch order. We call this a '
 the `git chain` command.
 
 ```
-$ git chain setup -n awesome-feature master feature-database feature-model feature-ui
+$ git chain setup -c awesome-feature master feature-database feature-model feature-ui
 Setting up chain awesome-feature
 ```
 
-The name of the chain can be specified using the `-n` option. The first argument (in this case `master`) is the name of
+The name of the chain can be specified using the `-c` option. The first argument (in this case `master`) is the name of
 base branch that we want the chain to be rebased onto in the future.
 
 This setup step only needs to be done once per chain.
@@ -76,13 +76,13 @@ Rebasing the following branches: ["master", "feature-database", "feature-model",
 ```
 
 Git Chain detects the current chain based on the branch you're currently on (a branch can only be part of one chain). You can
-specify a chain explicitly by using the `-n` option you already saw during setup.
+specify a chain explicitly by using the `-c` option you already saw during setup.
 
 ```
 $ git checkout master
 $ git chain rebase   
 Current branch 'master' is not in a chain.
-$ git chain rebase -n awesome-feature
+$ git chain rebase -c awesome-feature
 Rebasing the following branches: ["master", "feature-database", "feature-model", "feature-ui"]
 ```
 
