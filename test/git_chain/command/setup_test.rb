@@ -28,7 +28,7 @@ module GitChain
           assert_equal("default", before.name)
           assert_empty(before.branches)
 
-          Setup.new.call(%w(-n default master a b c))
+          Setup.new.call(%w(--chain default master a b c))
 
           chain = Models::Chain.from_config('default')
           assert_equal(%w(master a b c), chain.branch_names)

@@ -14,7 +14,7 @@ module GitChain
       def configure_option_parser(opts, options)
         super
 
-        opts.on("-n", "--name=NAME", "Chain name") do |name|
+        opts.on("-c", "--chain=NAME", "Chain name") do |name|
           options[:chain_name] = name
         end
 
@@ -103,7 +103,7 @@ module GitChain
           raise(AbortError, e)
         end
 
-        Setup.new.call(['-n', chain.name, *branch_names])
+        Setup.new.call(['--chain', chain.name, *branch_names])
       end
     end
   end

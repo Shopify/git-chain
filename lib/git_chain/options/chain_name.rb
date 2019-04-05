@@ -16,7 +16,7 @@ module GitChain
       def configure_option_parser(opts, options)
         super
 
-        opts.on("-n", "--name=NAME", "Chain name") do |name|
+        opts.on("-c", "--chain=NAME", "Chain name") do |name|
           options[:chain_name] = name
         end
       end
