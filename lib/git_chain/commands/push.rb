@@ -30,7 +30,7 @@ module GitChain
         remote = nil
         upstreams = {}
 
-        chain.branch_names.each do |b|
+        chain.branch_names[1..-1].each do |b|
           upstream = Git.upstream_branch(branch: b)
           if upstream
             branch_remote, upstream_branch = upstream.split('/', 2)

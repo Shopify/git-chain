@@ -21,9 +21,9 @@ module GitChain
           assert_empty(Git.branches(dir: remote_repo))
 
           Push.new.call(['-u'])
-          assert_equal(%w(master a b).sort, Git.branches(dir: remote_repo).sort)
+          assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
 
-          assert_equal('test/master', Git.upstream_branch(branch: 'master'))
+          assert_equal('test/a', Git.upstream_branch(branch: 'a'))
         end
       end
 
@@ -32,7 +32,7 @@ module GitChain
           assert_empty(Git.branches(dir: remote_repo))
 
           Push.new.call(['-u'])
-          assert_equal(%w(master a b).sort, Git.branches(dir: remote_repo).sort)
+          assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
 
           Git.exec('checkout', 'b')
           Git.exec('commit', '--amend', '--allow-empty', '-m', 'test')
