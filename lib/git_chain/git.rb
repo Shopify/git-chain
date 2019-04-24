@@ -53,8 +53,8 @@ module GitChain
         nil
       end
 
-      def ancestor?(a, b)
-        _, _, stat = capture3(['merge-base', '--is-ancestor', a, b], dir: dir)
+      def ancestor?(ancestor:, rev:, dir: nil)
+        _, _, stat = capture3('merge-base', '--is-ancestor', ancestor, rev, dir: dir)
         stat.success?
       end
 

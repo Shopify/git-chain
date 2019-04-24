@@ -62,11 +62,28 @@ module GitChain
 
           assert_equal(Git.rev_parse("master"), Git.rev_parse("a"))
 
-          # TODO doesn't work
-          # Git.exec("checkout", "a")
-          # Rebase.new.call
-          #
-          # assert_equal(Git.rev_parse("master"), Git.rev_parse("a"))
+          Git.exec("checkout", "a")
+          Rebase.new.call
+
+          assert_equal(Git.rev_parse("master"), Git.rev_parse("a"))
+        end
+      end
+
+      def test_rebase_moved
+        with_test_repository("a-b-chain") do
+          Rebase.new.call
+
+          a = Git.rev_parse("a")
+
+          Git.exec("checkout", "a")
+          Git.exec('commit', '-m', 'message', '--allow-empty')
+          new_a = Git.rev_parse("a")
+
+          Git.exec('rebase', '--keep-empty', '--onto', 'a', a, 'b')
+          assert_equal(new_a, Git.rev_parse("b~2"))
+
+          Rebase.new.call
+          assert_equal(new_a, Git.rev_parse("b~2"))
         end
       end
     end

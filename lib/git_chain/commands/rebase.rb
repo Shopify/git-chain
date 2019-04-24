@@ -68,7 +68,8 @@ module GitChain
       private
 
       def forwardable_branch_point?(branch)
-        Git.merge_base(branch.branch_point, Git.merge_base(branch.parent_branch, branch.name)) == branch.branch_point
+        Git.ancestor?(ancestor: branch.parent_branch, rev: branch.name) ||
+          Git.merge_base(branch.branch_point, Git.merge_base(branch.parent_branch, branch.name)) == branch.branch_point
       end
     end
   end
