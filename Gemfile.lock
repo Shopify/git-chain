@@ -1,40 +1,35 @@
 GEM
   remote: https://rubygems.org/
-  remote: https://packages.shopify.io/shopify/gems/
   specs:
     ansi (1.5.0)
     ast (2.4.0)
     builder (3.2.3)
-    jaro_winkler (1.5.2)
+    jaro_winkler (1.5.4)
     metaclass (0.0.4)
-    minitest (5.11.3)
-    minitest-reporters (1.3.6)
+    minitest (5.13.0)
+    minitest-reporters (1.4.2)
       ansi
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    mocha (1.2.1)
+    mocha (1.9.0)
       metaclass (~> 0.0.1)
-    parallel (1.14.0)
-    parser (2.6.2.0)
+    parallel (1.18.0)
+    parser (2.6.5.0)
       ast (~> 2.4.0)
-    powerpack (0.1.2)
-    psych (3.1.0)
     rainbow (3.0.0)
-    rake (12.3.2)
-    rubocop (0.65.0)
+    rake (13.0.0)
+    rubocop (0.76.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
-      parser (>= 2.5, != 2.5.1.1)
-      powerpack (~> 0.1)
-      psych (>= 3.1.0)
+      parser (>= 2.6)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (~> 1.4.0)
-    ruby-progressbar (1.10.0)
-    shopify-cops (0.0.20)
-      rubocop (~> 0.53)
-    unicode-display_width (1.4.1)
+      unicode-display_width (>= 1.4.0, < 1.7)
+    rubocop-performance (1.5.0)
+      rubocop (>= 0.71.0)
+    ruby-progressbar (1.10.1)
+    unicode-display_width (1.6.0)
 
 PLATFORMS
   ruby
@@ -44,8 +39,8 @@ DEPENDENCIES
   minitest-reporters
   mocha
   rake
-  rubocop (~> 0.65.0)
-  shopify-cops!
+  rubocop
+  rubocop-performance
 
 RUBY VERSION
    ruby 2.3.7p456

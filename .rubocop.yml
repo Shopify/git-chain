@@ -1,3 +1,6 @@
+require:
+  - rubocop-performance
+
 inherit_from:
   - https://shopify.github.io/ruby-style-guide/rubocop-cli.yml
 

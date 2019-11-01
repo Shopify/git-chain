@@ -2,7 +2,7 @@ require File.expand_path('../../vendor/bootstrap.rb', __FILE__)
 require 'git_chain'
 
 require 'minitest'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 require "minitest/autorun"
 require 'minitest/reporters'
 

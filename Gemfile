@@ -7,8 +7,8 @@ ruby '2.3.7'
 # `dev` uses no gems
 
 group :development, :test do
-  gem 'rubocop', '~> 0.65.0'
-  gem 'shopify-cops', require: false, source: 'https://packages.shopify.io/shopify/gems'
+  gem 'rubocop'
+  gem 'rubocop-performance'
   gem 'rake'
 end
 
