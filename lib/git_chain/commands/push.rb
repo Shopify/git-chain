@@ -33,13 +33,13 @@ module GitChain
             branch_remote, upstream_branch = upstream.split("/", 2)
             if remote && branch_remote != remote
               raise(Abort, "Multiple remotes detected: #{remote}, #{branch_remote}") if remote != branch_remote
-            else
+            elsif upstream_branch
               remote = branch_remote
             end
             upstreams[b] = upstream_branch
-          elsif options[:set_upstream]
-            upstreams[b] = b
           end
+
+          upstreams[b] ||= b if options[:set_upstream]
         end
 
         raise(Abort, "Nothing to push") if upstreams.empty?
