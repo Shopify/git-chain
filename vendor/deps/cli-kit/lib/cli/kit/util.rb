@@ -2,7 +2,7 @@ module CLI
   module Kit
     module Util
       class << self
-        def snake_case(camel_case, seperator = "_")
+        def snake_case(camel_case, seperator = '_')
           camel_case.to_s # MyCoolThing::MyAPIModule
             .gsub(/::/, '/') # MyCoolThing/MyAPIModule
             .gsub(/([A-Z]+)([A-Z][a-z])/, "\\1#{seperator}\\2") # MyCoolThing::MyAPI_Module
@@ -43,15 +43,15 @@ module CLI
         # non-empty line in the whole string
         #
         def strip_heredoc(str)
-          str.gsub(/^#{str.scan(/^[ \t]*(?=\S)/).min}/, "".freeze)
+          str.gsub(/^#{str.scan(/^[ \t]*(?=\S)/).min}/, ''.freeze)
         end
 
         # Joins an array with commas and "and", using the Oxford comma.
         def english_join(array)
-          return "" if array.nil?
-          return array.join(" and ") if array.length < 3
+          return '' if array.nil?
+          return array.join(' and ') if array.length < 3
 
-          "#{array[0..-2].join(', ')}, and #{array[-1]}"
+          "#{array[0..-2].join(", ")}, and #{array[-1]}"
         end
 
         # Execute a block within the context of a variable enviroment
@@ -77,7 +77,7 @@ module CLI
         # Converts a number to a human readable format on the SI scale
         #
         def to_si_scale(number, unit = '', factor: 1000, precision: 2, space: false)
-          raise ArgumentError, "factor should only be 1000 or 1024" unless [1000, 1024].include?(factor)
+          raise ArgumentError, 'factor should only be 1000 or 1024' unless [1000, 1024].include?(factor)
 
           small_scale = %w(m µ n p f a z y)
           big_scale = %w(k M G T P E Z Y)
@@ -85,7 +85,7 @@ module CLI
           number = number.abs.to_f
 
           if number == 0 || number.between?(1, factor)
-            prefix = ""
+            prefix = ''
             scale = 0
           else
             scale = Math.log(number, factor).floor
@@ -107,7 +107,7 @@ module CLI
           fnum = fnum.to_i if (fnum.to_i.to_f * divider) == number
 
           fnum = -fnum if negative
-          prefix = " " + prefix if space
+          prefix = ' ' + prefix if space
 
           "#{fnum}#{prefix}#{unit}"
         end

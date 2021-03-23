@@ -52,11 +52,11 @@ module CLI
                 end
               end
             when PARSE_ESC
-              case cp
+              mode = case cp
               when LEFT_SQUARE_BRACKET
-                mode = PARSE_ANSI
+                PARSE_ANSI
               else
-                mode = PARSE_ROOT
+                PARSE_ROOT
               end
             when PARSE_ANSI
               # ANSI escape codes preeeetty much have the format of:
@@ -83,7 +83,7 @@ module CLI
           # the end of the string.
           return text if !truncation_index || width <= printing_width
 
-          codepoints[0...truncation_index].pack("U*") + TRUNCATED
+          codepoints[0...truncation_index].pack('U*') + TRUNCATED
         end
 
         private

@@ -18,21 +18,21 @@ module CLI
       # `name` : the name of the config value you are looking for
       #
       # #### Returns
-      # `value` : the value of the config variable (false if none)
+      # `value` : the value of the config variable (nil if none)
       #
       # #### Example Usage
       # `config.get('name.of.config')`
       #
-      def get(section, name, default: false)
+      def get(section, name, default: nil)
         all_configs.dig("[#{section}]", name) || default
       end
 
       # Coalesce and enforce the value of a config to a boolean
       def get_bool(section, name, default: false)
         case get(section, name, default: default).to_s
-        when "true"
+        when 'true'
           true
-        when "false"
+        when 'false'
           false
         else
           raise CLI::Kit::Abort, "Invalid config: #{section}.#{name} is expected to be true or false"
@@ -116,7 +116,7 @@ module CLI
 
       def ini
         @ini ||= CLI::Kit::Ini
-          .new(file, default_section: "[global]", convert_types: false)
+          .new(file, default_section: '[global]', convert_types: false)
           .tap(&:parse)
       end
 

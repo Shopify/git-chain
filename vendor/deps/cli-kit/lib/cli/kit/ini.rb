@@ -61,11 +61,11 @@ module CLI
       private
 
       def to_ini(h, git_format: false)
-        optional_tab = git_format ? "\t" : ""
+        optional_tab = git_format ? "\t" : ''
         str = []
         h.each do |k, v|
           if section_designator?(k)
-            str << "" unless str.empty? || git_format
+            str << '' unless str.empty? || git_format
             str << k
             str << to_ini(v, git_format: git_format)
           else

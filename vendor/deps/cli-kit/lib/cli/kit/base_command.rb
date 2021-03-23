@@ -19,13 +19,13 @@ module CLI
         cmd = new
         stats_tags = cmd.stats_tags(args, command_name)
         begin
-          statsd_increment("cli.command.invoked", tags: stats_tags)
-          statsd_time("cli.command.time", tags: stats_tags) do
+          statsd_increment('cli.command.invoked', tags: stats_tags)
+          statsd_time('cli.command.time', tags: stats_tags) do
             cmd.call(args, command_name)
           end
-          statsd_increment("cli.command.success", tags: stats_tags)
-        rescue => e
-          statsd_increment("cli.command.exception", tags: stats_tags + ["exception:#{e.class}"])
+          statsd_increment('cli.command.success', tags: stats_tags)
+        rescue Exception => e # rubocop:disable Lint/RescueException
+          statsd_increment('cli.command.exception', tags: stats_tags + ["exception:#{e.class}"])
           raise e
         end
       end

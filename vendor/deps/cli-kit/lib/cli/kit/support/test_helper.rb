@@ -10,7 +10,7 @@ module CLI
         def assert_all_commands_run(should_raise: true)
           errors = CLI::Kit::System.error_message
           CLI::Kit::System.reset!
-          assert false, errors if should_raise && !errors.nil?
+          assert(false, errors) if should_raise && !errors.nil?
           errors
         end
 
@@ -134,8 +134,8 @@ module CLI
                 #
                 # Note: Must set allow or success
                 #
-                def fake(*a, stdout: "", stderr: "", allow: nil, success: nil, sudo: false, env: {})
-                  raise ArgumentError, "success or allow must be set" if success.nil? && allow.nil?
+                def fake(*a, stdout: '', stderr: '', allow: nil, success: nil, sudo: false, env: {})
+                  raise ArgumentError, 'success or allow must be set' if success.nil? && allow.nil?
 
                   @delegate_open3 ||= {}
                   @delegate_open3[a.join(' ')] = {
@@ -196,22 +196,22 @@ module CLI
 
                   unless errors[:unexpected].empty?
                     final_error << CLI::UI.fmt(<<~EOF)
-                    {{bold:Unexpected command invocations:}}
-                    {{command:#{errors[:unexpected].join("\n")}}}
+                      {{bold:Unexpected command invocations:}}
+                      {{command:#{errors[:unexpected].join("\n")}}}
                     EOF
                   end
 
                   unless errors[:not_run].empty?
                     final_error << CLI::UI.fmt(<<~EOF)
-                    {{bold:Expected commands were not run:}}
-                    {{command:#{errors[:not_run].join("\n")}}}
+                      {{bold:Expected commands were not run:}}
+                      {{command:#{errors[:not_run].join("\n")}}}
                     EOF
                   end
 
                   unless errors[:other].empty?
                     final_error << CLI::UI.fmt(<<~EOF)
-                    {{bold:Commands were not run as expected:}}
-                    #{errors[:other].map { |cmd, msg| "{{command:#{cmd}}}\n#{msg}" }.join("\n\n")}
+                      {{bold:Commands were not run as expected:}}
+                      #{errors[:other].map { |cmd, msg| "{{command:#{cmd}}}\n#{msg}" }.join("\n\n")}
                     EOF
                   end
 

@@ -13,19 +13,17 @@ module CLI
       def call(command, command_name, args)
         with_traps do
           with_logging do |id|
+            command.call(args, command_name)
+          rescue => e
             begin
-              command.call(args, command_name)
-            rescue => e
-              begin
-                $stderr.puts "This command ran with ID: #{id}"
-                $stderr.puts "Please include this information in any issues/report along with relevant logs"
-              rescue SystemCallError
-                # Outputting to stderr is best-effort.  Avoid raising another error when outputting debug info so that
-                # we can detect and log the original error, which may even be the source of this error.
-                nil
-              end
-              raise e
+              $stderr.puts "This command ran with ID: #{id}"
+              $stderr.puts 'Please include this information in any issues/report along with relevant logs'
+            rescue SystemCallError
+              # Outputting to stderr is best-effort.  Avoid raising another error when outputting debug info so that
+              # we can detect and log the original error, which may even be the source of this error.
+              nil
             end
+            raise e
           end
         end
       end
@@ -53,10 +51,17 @@ module CLI
         return yield unless Signal.list.key?(signal)
 
         begin
-          prev_handler = trap(signal, handler)
+          begin
+            prev_handler = trap(signal, handler)
+            installed = true
+          rescue ArgumentError
+            # If we couldn't install a signal handler because the signal is
+            # reserved, remember not to uninstall it later.
+            installed = false
+          end
           yield
         ensure
-          trap(signal, prev_handler)
+          trap(signal, prev_handler) if installed
         end
       end
 
