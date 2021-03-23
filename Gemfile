@@ -10,6 +10,8 @@ ruby "2.7.2"
 group :development, :test do
   gem "rubocop"
   gem "rubocop-performance"
+  gem "rubocop-minitest"
+  gem "rubocop-rake"
   gem "rubocop-shopify", require: false
   gem "rake"
 end
