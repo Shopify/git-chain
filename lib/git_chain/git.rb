@@ -100,7 +100,7 @@ module GitChain
 
       def rebase_in_progress?(dir: nil)
         dir ||= ".git"
-        File.exist?(File.expand_path(File.join(dir, "REBASE_HEAD")))
+        !Dir.glob(File.join(File.expand_path(dir), "rebase-{apply,merge}")).empty?
       end
 
       private
