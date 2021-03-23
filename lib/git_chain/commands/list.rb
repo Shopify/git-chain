@@ -35,7 +35,9 @@ module GitChain
 
         case options[:format]
         when :short
-          chain_names.each(&GitChain::Logger.method(:info))
+          chain_names.each do |cn|
+            GitChain::Logger.info("#{cn}\n")
+          end
         else
           current = current_chain
           prefix = ""
@@ -45,7 +47,7 @@ module GitChain
             branches = chain.branch_names.map { |b| "{{cyan:#{b}}}" }
 
             prefix = cn == current ? "{{yellow:*}} " : "  " if current
-            GitChain::Logger.info("#{prefix}{{blue:#{chain.name}}} [#{branches.join(" -> ")}]")
+            GitChain::Logger.info("#{prefix}{{blue:#{chain.name}}} [#{branches.join(" -> ")}]\n")
           end
         end
       end
