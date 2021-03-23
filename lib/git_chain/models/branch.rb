@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GitChain
   module Models
     class Branch < Model

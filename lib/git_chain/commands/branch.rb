@@ -1,4 +1,5 @@
-require 'optparse'
+# frozen_string_literal: true
+require "optparse"
 
 module GitChain
   module Commands
@@ -39,7 +40,7 @@ module GitChain
           raise(ArgError, "Expected 1 or 2 arguments")
         end
 
-        raise(Abort, "#{start_point} is not a branch") if Git.exec('branch', '--list', start_point).empty?
+        raise(Abort, "#{start_point} is not a branch") if Git.exec("branch", "--list", start_point).empty?
 
         [start_point, branch_name]
       end
@@ -98,12 +99,12 @@ module GitChain
         end
 
         begin
-          Git.exec('checkout', start_point, '-B', branch_name)
+          Git.exec("checkout", start_point, "-B", branch_name)
         rescue Git::Failure => e
           raise(Abort, e)
         end
 
-        Setup.new.call(['--chain', chain.name, *branch_names])
+        Setup.new.call(["--chain", chain.name, *branch_names])
       end
     end
   end

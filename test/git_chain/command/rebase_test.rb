@@ -1,4 +1,5 @@
-require 'test_helper'
+# frozen_string_literal: true
+require "test_helper"
 
 module GitChain
   module Commands
@@ -23,9 +24,9 @@ module GitChain
             Rebase.new.run(chain_name: "default")
           end
 
-          Git.exec('add', '.')
-          Git.exec('commit', '-m', 'message')
-          Git.exec('rebase', '--continue')
+          Git.exec("add", ".")
+          Git.exec("commit", "-m", "message")
+          Git.exec("rebase", "--continue")
 
           Rebase.new.call
 
@@ -76,10 +77,10 @@ module GitChain
           a = Git.rev_parse("a")
 
           Git.exec("checkout", "a")
-          Git.exec('commit', '-m', 'message', '--allow-empty')
+          Git.exec("commit", "-m", "message", "--allow-empty")
           new_a = Git.rev_parse("a")
 
-          Git.exec('rebase', '--keep-empty', '--onto', 'a', a, 'b')
+          Git.exec("rebase", "--keep-empty", "--onto", "a", a, "b")
           assert_equal(new_a, Git.rev_parse("b~2"))
 
           Rebase.new.call

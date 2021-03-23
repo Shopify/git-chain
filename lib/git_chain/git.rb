@@ -1,17 +1,18 @@
-require 'open3'
+# frozen_string_literal: true
+require "open3"
 
 module GitChain
   class Git
     class Failure < StandardError
       def initialize(args, err)
-        super("git #{args.join(' ')} failed: \n#{err}")
+        super("git #{args.join(" ")} failed: \n#{err}")
       end
     end
 
     class << self
       def capture3(*args, dir: nil)
         cmd = %w(git)
-        cmd += ['-C', dir] if dir
+        cmd += ["-C", dir] if dir
         cmd += args
         Open3.capture3(*cmd)
       end
@@ -23,7 +24,7 @@ module GitChain
       end
 
       def branches(dir: nil)
-        exec('branch', '--list', '--format=%(refname:short)', dir: dir).split
+        exec("branch", "--list", "--format=%(refname:short)", dir: dir).split
       rescue Failure
         []
       end
@@ -41,25 +42,25 @@ module GitChain
       end
 
       def current_branch(dir: nil)
-        exec('symbolic-ref', '--short', 'HEAD', dir: dir)
+        exec("symbolic-ref", "--short", "HEAD", dir: dir)
       rescue Failure
         nil
       end
 
       # 'origin/foo/bar'
-      def upstream_branch(branch: '', dir: nil)
-        exec('rev-parse', '--abbrev-ref', '--symbolic-full-name', "#{branch}@{u}", dir: dir)
+      def upstream_branch(branch: "", dir: nil)
+        exec("rev-parse", "--abbrev-ref", "--symbolic-full-name", "#{branch}@{u}", dir: dir)
       rescue Failure
         nil
       end
 
       def ancestor?(ancestor:, rev:, dir: nil)
-        _, _, stat = capture3('merge-base', '--is-ancestor', ancestor, rev, dir: dir)
+        _, _, stat = capture3("merge-base", "--is-ancestor", ancestor, rev, dir: dir)
         stat.success?
       end
 
       def merge_base(commit, *commits, dir: nil)
-        exec('merge-base', commit, *commits, dir: dir)
+        exec("merge-base", commit, *commits, dir: dir)
       rescue
         nil
       end
@@ -71,19 +72,19 @@ module GitChain
       end
 
       def set_config(key, value, scope: nil, dir: nil)
-        git_config('--unset-all', key, scope: scope, dir: dir)
+        git_config("--unset-all", key, scope: scope, dir: dir)
 
         Array(value).each do |val|
-          git_config('--add', key, val, scope: scope, dir: dir)
+          git_config("--add", key, val, scope: scope, dir: dir)
         end
       end
 
       def get_config(key, urlmatch: nil, scope: nil, dir: nil)
         args = %w(--includes)
         args += if urlmatch
-          ['--get-urlmatch', key, urlmatch]
+          ["--get-urlmatch", key, urlmatch]
         else
-          ['--get', key]
+          ["--get", key]
         end
         out, _, stat = git_config(*args, scope: scope, dir: dir)
         return nil unless stat.success?
@@ -92,7 +93,7 @@ module GitChain
       end
 
       def get_all_configs(key, scope: nil, dir: nil)
-        current_vals, _, stat = git_config('--includes', '--get-all', key, scope: scope, dir: dir)
+        current_vals, _, stat = git_config("--includes", "--get-all", key, scope: scope, dir: dir)
         return [] unless stat.success?
         current_vals.lines.map(&:strip)
       end

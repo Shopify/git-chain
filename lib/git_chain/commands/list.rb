@@ -1,4 +1,5 @@
-require 'optparse'
+# frozen_string_literal: true
+require "optparse"
 
 module GitChain
   module Commands
@@ -37,14 +38,14 @@ module GitChain
           chain_names.each(&GitChain::Logger.method(:info))
         else
           current = current_chain
-          prefix = ''
+          prefix = ""
 
           chain_names.each do |cn|
             chain = Models::Chain.from_config(cn)
             branches = chain.branch_names.map { |b| "{{cyan:#{b}}}" }
 
             prefix = cn == current ? "{{yellow:*}} " : "  " if current
-            GitChain::Logger.info("#{prefix}{{blue:#{chain.name}}} [#{branches.join(' -> ')}]")
+            GitChain::Logger.info("#{prefix}{{blue:#{chain.name}}} [#{branches.join(" -> ")}]")
           end
         end
       end

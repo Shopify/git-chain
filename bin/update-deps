@@ -1,7 +1,8 @@
 #!/usr/bin/ruby --disable-gems
+# frozen_string_literal: true
 
-require 'open3'
-require 'fileutils'
+require "open3"
+require "fileutils"
 
 def bail(msg)
   $stderr.puts("[ERROR] #{msg}")
@@ -13,12 +14,12 @@ def warn(msg)
 end
 
 deps = {
-  'cli-ui' => 'lib',
-  'cli-kit' => 'lib',
+  "cli-ui" => "lib",
+  "cli-kit" => "lib",
 }
 
 deps.each do |dep, copy_path|
-  path = File.expand_path(dep, '~/src/github.com/Shopify')
+  path = File.expand_path(dep, "~/src/github.com/Shopify")
 
   unless Dir.exist?(path)
     bail("dependency is not checked out: #{dep} {{bold:{{blue:(try {{green:dev clone}})}}}}")
@@ -28,18 +29,18 @@ deps.each do |dep, copy_path|
   dirty = false
 
   Dir.chdir(path) do
-    _, _, stat = Open3.capture3('git fetch origin master')
+    _, _, stat = Open3.capture3("git fetch origin master")
     bail("couldn't git fetch in dependency: #{dep}") unless stat.success?
 
-    head_sha, stat = Open3.capture2('git rev-parse HEAD')
+    head_sha, stat = Open3.capture2("git rev-parse HEAD")
     bail("couldn't determine HEAD: #{dep}") unless stat.success?
     head_sha.chomp!
 
-    fetch_head_sha, stat = Open3.capture2('git rev-parse FETCH_HEAD')
+    fetch_head_sha, stat = Open3.capture2("git rev-parse FETCH_HEAD")
     bail("couldn't determine FETCH_HEAD: #{dep}") unless stat.success?
     fetch_head_sha.chomp!
 
-    git_status, stat = Open3.capture2('git status --porcelain')
+    git_status, stat = Open3.capture2("git status --porcelain")
     bail("couldn't determine git status: #{dep}") unless stat.success?
 
     if head_sha != fetch_head_sha

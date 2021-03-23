@@ -1,4 +1,5 @@
-require 'test_helper'
+# frozen_string_literal: true
+require "test_helper"
 
 module GitChain
   module Commands
@@ -6,7 +7,7 @@ module GitChain
       include RepositoryTestHelper
 
       def test_append
-        with_test_repository('a-b-chain') do
+        with_test_repository("a-b-chain") do
           Branch.new.call(%w(-c new a c))
 
           out, _ = capture_io do

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GitChain
   module Models
     autoload :Branch, "git_chain/models/branch"

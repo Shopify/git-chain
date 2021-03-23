@@ -1,4 +1,5 @@
-require 'optparse'
+# frozen_string_literal: true
+require "optparse"
 
 module GitChain
   module Commands
@@ -25,7 +26,7 @@ module GitChain
         branch_names = options[:args]
 
         unless (missing = branch_names - Git.branches).empty?
-          raise(Abort, "Branch does not exist: #{missing.join(', ')}")
+          raise(Abort, "Branch does not exist: #{missing.join(", ")}")
         end
 
         raise(Abort, "Branches are not all connected") if Git.merge_base(*branch_names).nil?
@@ -92,10 +93,10 @@ module GitChain
         end
 
         unless removed.empty?
-          puts_warning("Removed #{removed.map { |b| "{{info:#{b}}}" }.join(', ')} from the chain.")
+          puts_warning("Removed #{removed.map { |b| "{{info:#{b}}}" }.join(", ")} from the chain.")
         end
 
-        log_names = branch_names.map { |b| "{{cyan:#{b}}}" }.join(' -> ')
+        log_names = branch_names.map { |b| "{{cyan:#{b}}}" }.join(" -> ")
         puts_success("Configured chain {{info:#{chain.name}}} {{reset:[#{log_names}]}}")
       end
     end

@@ -1,4 +1,5 @@
-require 'optparse'
+# frozen_string_literal: true
+require "optparse"
 
 module GitChain
   module Commands
@@ -6,7 +7,7 @@ module GitChain
       include Util::Output
 
       def self.command_name
-        @command_name ||= name.split('::')
+        @command_name ||= name.split("::")
           .last
           .gsub(/([A-Z]+)([A-Z][a-z])/, '\1-\2')
           .gsub(/([a-z\d])([A-Z])/, '\1-\2')

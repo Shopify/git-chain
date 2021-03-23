@@ -1,6 +1,7 @@
 #!/usr/bin/ruby --disable-gems
+# frozen_string_literal: true
 
-require File.expand_path('../../vendor/bootstrap.rb', File.realpath(__FILE__))
-require 'git_chain'
+require File.expand_path("../../vendor/bootstrap.rb", File.realpath(__FILE__))
+require "git_chain"
 
 exit(GitChain::EntryPoint.call(ARGV.dup))

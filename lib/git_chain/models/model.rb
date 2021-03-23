@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GitChain
   module Models
     class Model
@@ -5,7 +6,7 @@ module GitChain
       include Util::Output
 
       def inspect
-        "<#{self.class.name.split('::').last} #{state.select { |_, v| v }}>"
+        "<#{self.class.name.split("::").last} #{state.select { |_, v| v }}>"
       end
     end
   end

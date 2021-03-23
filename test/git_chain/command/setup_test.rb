@@ -1,4 +1,5 @@
-require 'test_helper'
+# frozen_string_literal: true
+require "test_helper"
 
 module GitChain
   module Commands
@@ -6,15 +7,15 @@ module GitChain
       include RepositoryTestHelper
 
       def test_chain_noop
-        with_test_repository('a-b-chain') do
-          chain = Models::Chain.from_config('default')
+        with_test_repository("a-b-chain") do
+          chain = Models::Chain.from_config("default")
           Setup.new.call(%w(master a b))
-          assert_equal(chain, Models::Chain.from_config('default'))
+          assert_equal(chain, Models::Chain.from_config("default"))
         end
       end
 
       def test_orphan
-        with_test_repository('orphan') do
+        with_test_repository("orphan") do
           err = assert_raises(Abort) do
             Setup.new.call(%w(a b))
           end
@@ -23,7 +24,7 @@ module GitChain
       end
 
       def test_branches_dupes
-        with_test_repository('a-b') do
+        with_test_repository("a-b") do
           [%w(b b), %w(a b b)].each do |branches|
             err = assert_raises(Abort) do
               Setup.new.call(branches)
@@ -35,14 +36,14 @@ module GitChain
       end
 
       def test_setup
-        with_test_repository('a-b') do
-          before = Models::Chain.from_config('default')
+        with_test_repository("a-b") do
+          before = Models::Chain.from_config("default")
           assert_equal("default", before.name)
           assert_empty(before.branches)
 
           Setup.new.call(%w(--chain default master a b))
 
-          chain = Models::Chain.from_config('default')
+          chain = Models::Chain.from_config("default")
           assert_equal(%w(master a b), chain.branch_names)
           chain.branches.each_with_index do |b, i|
             if i == 0

@@ -1,4 +1,5 @@
-require 'test_helper'
+# frozen_string_literal: true
+require "test_helper"
 
 module GitChain
   module Models
@@ -6,9 +7,9 @@ module GitChain
       include RepositoryTestHelper
 
       def test_from_config
-        with_test_repository('a-b-chain') do
-          chain = Chain.from_config('default')
-          assert_equal('default', chain.name)
+        with_test_repository("a-b-chain") do
+          chain = Chain.from_config("default")
+          assert_equal("default", chain.name)
           assert_equal(%w(master a b), chain.branch_names)
         end
       end

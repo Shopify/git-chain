@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GitChain
   module EntryPoint
     PRELUDE = "git chain"

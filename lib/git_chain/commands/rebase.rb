@@ -1,4 +1,5 @@
-require 'optparse'
+# frozen_string_literal: true
+require "optparse"
 
 module GitChain
   module Commands
@@ -19,7 +20,7 @@ module GitChain
         chain = GitChain::Models::Chain.from_config(options[:chain_name])
         raise(Abort, "Chain '#{options[:chain_name]}' does not exist.") if chain.empty?
 
-        log_names = chain.branch_names.map { |b| "{{cyan:#{b}}}" }.join(' -> ')
+        log_names = chain.branch_names.map { |b| "{{cyan:#{b}}}" }.join(" -> ")
         puts_debug("Rebasing chain {{info:#{chain.name}}} [#{log_names}]")
 
         branches_to_rebase = chain.branches[1..-1]
@@ -29,33 +30,31 @@ module GitChain
         updates = 0
 
         branches_to_rebase.each do |branch|
-          begin
-            parent_sha = Git.rev_parse(branch.parent_branch)
-            if parent_sha == branch.branch_point
-              puts_debug("Branch {{info:#{branch.name}}} is already up-to-date.")
-              next
-            end
-
-            updates += 1
-
-            if parent_sha != branch.branch_point && forwardable_branch_point?(branch)
-              puts_info("Auto-forwarding #{branch.name} to #{branch.parent_branch}")
-              Git.set_config("branch.#{branch.name}.branchPoint", parent_sha)
-              branch.branch_point = parent_sha
-            end
-
-            args = ["rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name]
-            puts_debug_git(*args)
-            Git.exec(*args)
-            Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
-            # validate the parameters
-          rescue GitChain::Git::Failure => e
-            puts_warning(e.message)
-
-            puts_error("Cannot merge #{branch.name} onto #{branch.parent_branch}.")
-            puts_error("Fix the rebase and run {{command:git chain rebase}} again.")
-            raise(AbortSilent)
+          parent_sha = Git.rev_parse(branch.parent_branch)
+          if parent_sha == branch.branch_point
+            puts_debug("Branch {{info:#{branch.name}}} is already up-to-date.")
+            next
           end
+
+          updates += 1
+
+          if parent_sha != branch.branch_point && forwardable_branch_point?(branch)
+            puts_info("Auto-forwarding #{branch.name} to #{branch.parent_branch}")
+            Git.set_config("branch.#{branch.name}.branchPoint", parent_sha)
+            branch.branch_point = parent_sha
+          end
+
+          args = ["rebase", "--keep-empty", "--onto", branch.parent_branch, branch.branch_point, branch.name]
+          puts_debug_git(*args)
+          Git.exec(*args)
+          Git.set_config("branch.#{branch.name}.branchPoint", parent_sha, scope: :local)
+          # validate the parameters
+        rescue GitChain::Git::Failure => e
+          puts_warning(e.message)
+
+          puts_error("Cannot merge #{branch.name} onto #{branch.parent_branch}.")
+          puts_error("Fix the rebase and run {{command:git chain rebase}} again.")
+          raise(AbortSilent)
         end
 
         if updates.positive?
