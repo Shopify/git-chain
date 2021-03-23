@@ -35,7 +35,7 @@ $ git chain # Should now work
 ## Example
 
 Let's have a look at an example. Imagine the following feature: You want to add a new database table (pull request 1), add a model
-using the table (pull request 2) and build a user interface for editing records (pull request 2).
+using the table (pull request 2) and build a user interface for editing records (pull request 3).
 
 At the beginning you'll have this nice clean git history (`git log --oneline --all --graph`, branch names in parentheses):
 
