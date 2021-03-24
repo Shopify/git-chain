@@ -71,7 +71,11 @@ module GitChain
         [parser, options]
       end
 
-      def configure_option_parser(_opts, _options)
+      def configure_option_parser(opts, _options)
+        opts.on("-h", "--help", "Prints this help") do
+          puts(opts.to_s)
+          exit
+        end
       end
 
       def default_options
