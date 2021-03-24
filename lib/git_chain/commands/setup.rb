@@ -96,6 +96,7 @@ module GitChain
           puts_warning("Removed #{removed.map { |b| "{{info:#{b}}}" }.join(", ")} from the chain.")
         end
 
+        chain = Models::Chain.from_config(chain.name)
         puts_success("Configured chain #{chain.formatted}")
       end
     end

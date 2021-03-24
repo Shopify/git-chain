@@ -5,6 +5,7 @@ module GitChain
     autoload :Command, "git_chain/commands/command"
     autoload :List, "git_chain/commands/list"
     autoload :Rebase, "git_chain/commands/rebase"
+    autoload :Prune, "git_chain/commands/prune"
     autoload :Push, "git_chain/commands/push"
     autoload :Setup, "git_chain/commands/setup"
 
