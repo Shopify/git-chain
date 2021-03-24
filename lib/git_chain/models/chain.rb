@@ -18,6 +18,10 @@ module GitChain
         branches.empty?
       end
 
+      def formatted
+        "{{info:#{name}}} {{reset:[{{cyan:#{branch_names.join(" ")}}}]}}"
+      end
+
       class << self
         def from_config(name)
           chains = Git.chains(chain_name: name)

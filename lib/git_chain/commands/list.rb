@@ -36,7 +36,7 @@ module GitChain
         case options[:format]
         when :short
           chain_names.each do |cn|
-            GitChain::Logger.info("#{cn}\n")
+            puts(cn)
           end
         else
           current = current_chain
@@ -44,10 +44,8 @@ module GitChain
 
           chain_names.each do |cn|
             chain = Models::Chain.from_config(cn)
-            branches = chain.branch_names.map { |b| "{{cyan:#{b}}}" }
-
             prefix = cn == current ? "{{yellow:*}} " : "  " if current
-            GitChain::Logger.info("#{prefix}{{blue:#{chain.name}}} [#{branches.join(" -> ")}]\n")
+            puts("#{prefix}#{chain.formatted}}}")
           end
         end
       end

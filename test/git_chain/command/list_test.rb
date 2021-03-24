@@ -17,8 +17,8 @@ module GitChain
           end
 
           expected = CLI::UI.fmt(<<~EOS)
-              {{blue:default}} [{{cyan:master}} -> {{cyan:a}} -> {{cyan:b}}]
-            {{yellow:*}} {{blue:new}} [{{cyan:a}} -> {{cyan:c}}]
+              {{info:default}} {{reset:[{{cyan:master a b}}]}}
+            {{yellow:*}} {{info:new}} {{reset:[{{cyan:a c}}]}}
           EOS
           assert_equal(expected, out)
         end
