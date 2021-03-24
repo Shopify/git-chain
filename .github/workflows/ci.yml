@@ -1,4 +1,4 @@
-name: ci
+name: CI
 on:
   push:
     branches:
@@ -10,12 +10,12 @@ on:
       - '**.md'
 
 jobs:
-  build:
+  tests:
+    name: Ruby ${{ matrix.ruby }} tests
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         ruby: [ '2.7' ]
-    name: Ruby ${{ matrix.ruby }} tests
     steps:
       - uses: actions/checkout@v2
 
@@ -34,3 +34,19 @@ jobs:
 
       - name: Run tests
         run: bundle exec rake test
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run tests
+        run: bundle exec rubocop
