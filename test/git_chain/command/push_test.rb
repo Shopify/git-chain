@@ -7,43 +7,49 @@ module GitChain
       include RepositoryTestHelper
 
       def test_push_nothing
-        with_remote_test_repository("a-b-chain") do |remote_repo|
-          assert_empty(Git.branches(dir: remote_repo))
+        capture_io do
+          with_remote_test_repository("a-b-chain") do |remote_repo|
+            assert_empty(Git.branches(dir: remote_repo))
 
-          err = assert_raises(Abort) do
-            Push.new.call
+            err = assert_raises(Abort) do
+              Push.new.call
+            end
+            assert_equal("Nothing to push", err.message)
           end
-          assert_equal("Nothing to push", err.message)
         end
       end
 
       def test_push_upstream
-        with_remote_test_repository("a-b-chain") do |remote_repo|
-          assert_empty(Git.branches(dir: remote_repo))
+        capture_io do
+          with_remote_test_repository("a-b-chain") do |remote_repo|
+            assert_empty(Git.branches(dir: remote_repo))
 
-          Push.new.call(["-u"])
-          assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
+            Push.new.call(["-u"])
+            assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
 
-          assert_equal("test/a", Git.upstream_branch(branch: "a"))
+            assert_equal("test/a", Git.upstream_branch(branch: "a"))
+          end
         end
       end
 
       def test_push_force_upstream
-        with_remote_test_repository("a-b-chain") do |remote_repo|
-          assert_empty(Git.branches(dir: remote_repo))
+        capture_io do
+          with_remote_test_repository("a-b-chain") do |remote_repo|
+            assert_empty(Git.branches(dir: remote_repo))
 
-          Push.new.call(["-u"])
-          assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
+            Push.new.call(["-u"])
+            assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
 
-          Git.exec("checkout", "b")
-          Git.exec("commit", "--amend", "--allow-empty", "-m", "test")
+            Git.exec("checkout", "b")
+            Git.exec("commit", "--amend", "--allow-empty", "-m", "test")
 
-          err = assert_raises(Abort) do
-            Push.new.call
+            err = assert_raises(Abort) do
+              Push.new.call
+            end
+            assert_equal("git push failed", err.message)
+
+            Push.new.call(["-f"])
           end
-          assert_equal("git push failed", err.message)
-
-          Push.new.call(["-f"])
         end
       end
 
