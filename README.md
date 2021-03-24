@@ -17,7 +17,7 @@ single command: `git chain rebase`.
 ## Requirements
 
 - Git (of course)
-- System Ruby (`/usr/bin/ruby -v >= 2.3.7`) 
+- System Ruby (`/usr/bin/ruby -v >= 2.6.3`)
 
 ## Installation
 
