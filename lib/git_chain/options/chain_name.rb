@@ -14,6 +14,15 @@ module GitChain
         end
       end
 
+      def current_chain(options)
+        raise(Abort, "Current branch '#{Git.current_branch}' is not in a chain.") unless options[:chain_name]
+
+        chain = GitChain::Models::Chain.from_config(options[:chain_name])
+        raise(Abort, "Chain '#{options[:chain_name]}' does not exist.") if chain.empty?
+
+        chain
+      end
+
       def configure_option_parser(opts, options)
         super
 
