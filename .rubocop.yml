@@ -9,4 +9,4 @@ inherit_gem:
 AllCops:
   Exclude:
     - 'vendor/**/*'
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 2.6
