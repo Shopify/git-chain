@@ -61,6 +61,16 @@ module GitChain
         nil
       end
 
+      def remote_name(branch: "", dir: nil)
+        upstream_branch(branch: branch, dir: dir)&.split("/", 2)&.first
+      end
+
+      def remote_url(branch: "", dir: nil)
+        name = remote_name(branch: branch, dir: dir)
+        return if name.empty?
+        exec("remote", "get-url", name)
+      end
+
       def ancestor?(ancestor:, rev:, dir: nil)
         _, _, stat = capture3("merge-base", "--is-ancestor", ancestor, rev, dir: dir)
         stat.success?
