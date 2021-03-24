@@ -23,11 +23,14 @@ module GitChain
         capture_io do
           with_remote_test_repository("a-b-chain") do |remote_repo|
             assert_empty(Git.branches(dir: remote_repo))
+            assert_nil(Git.remote_name(branch: "a"))
 
             Push.new.call(["-u"])
             assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
 
             assert_equal("test/a", Git.push_branch(branch: "a"))
+            assert_equal("test", Git.remote_name(branch: "a"))
+            assert_equal(remote_repo, Git.remote_url(branch: "a"))
           end
         end
       end

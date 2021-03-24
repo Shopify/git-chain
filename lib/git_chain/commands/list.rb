@@ -18,6 +18,10 @@ module GitChain
         opts.on("-s", "--short", "Only display chain names") do
           options[:format] = :short
         end
+
+        opts.on("--github-links", "Display GitHub links to open pull requests") do
+          options[:format] = :github
+        end
       end
 
       def current_chain
@@ -38,6 +42,10 @@ module GitChain
           chain_names.each do |cn|
             puts(cn)
           end
+        when :github
+          chain_names.each do |cn|
+            print_github_links(cn)
+          end
         else
           current = current_chain
           prefix = ""
@@ -47,6 +55,29 @@ module GitChain
             prefix = cn == current ? "{{yellow:*}} " : "  " if current
             puts("#{prefix}#{chain.formatted}}}")
           end
+        end
+      end
+
+      def print_github_links(chain_name)
+        puts("{{bold:#{chain_name}}}")
+        chain = Models::Chain.from_config(chain_name)
+        branch_names = chain.branch_names
+
+        # Assume that all branches in the chain have the same remote as the last branch
+        last = branch_names[-1]
+        remote_url = Git.remote_url(branch: last)
+        unless remote_url
+          raise(Abort, "No remote detected for branch {{info:#{last}}}. Did you push your branches first?")
+        end
+
+        begin
+          github_url, _, _ = Util::Github.parse_url(remote_url)
+        rescue ArgumentError => e
+          raise(Abort, "{{error:#{e}}}: {{green:#{remote_url}}}")
+        end
+
+        branch_names[0..-2].zip(branch_names[1..-1]).each do |(a, b)|
+          puts("  #{github_url}/pull/new/#{a}...#{b}")
         end
       end
     end
