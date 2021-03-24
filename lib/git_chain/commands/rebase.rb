@@ -20,8 +20,7 @@ module GitChain
         chain = GitChain::Models::Chain.from_config(options[:chain_name])
         raise(Abort, "Chain '#{options[:chain_name]}' does not exist.") if chain.empty?
 
-        log_names = chain.branch_names.map { |b| "{{cyan:#{b}}}" }.join(" -> ")
-        puts_debug("Rebasing chain {{info:#{chain.name}}} [#{log_names}]")
+        puts_debug("Rebasing chain #{chain.formatted}}}")
 
         branches_to_rebase = chain.branches[1..-1]
 

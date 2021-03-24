@@ -96,8 +96,7 @@ module GitChain
           puts_warning("Removed #{removed.map { |b| "{{info:#{b}}}" }.join(", ")} from the chain.")
         end
 
-        log_names = branch_names.map { |b| "{{cyan:#{b}}}" }.join(" -> ")
-        puts_success("Configured chain {{info:#{chain.name}}} {{reset:[#{log_names}]}}")
+        puts_success("Configured chain #{chain.formatted}")
       end
     end
   end
