@@ -27,7 +27,7 @@ module GitChain
             Push.new.call(["-u"])
             assert_equal(%w(a b).sort, Git.branches(dir: remote_repo).sort)
 
-            assert_equal("test/a", Git.upstream_branch(branch: "a"))
+            assert_equal("test/a", Git.push_branch(branch: "a"))
           end
         end
       end

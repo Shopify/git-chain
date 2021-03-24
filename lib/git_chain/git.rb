@@ -54,6 +54,13 @@ module GitChain
         nil
       end
 
+      # 'origin/foo/bar'
+      def push_branch(branch: "", dir: nil)
+        exec("rev-parse", "--abbrev-ref", "--symbolic-full-name", "#{branch}@{push}", dir: dir)
+      rescue Failure
+        nil
+      end
+
       def ancestor?(ancestor:, rev:, dir: nil)
         _, _, stat = capture3("merge-base", "--is-ancestor", ancestor, rev, dir: dir)
         stat.success?

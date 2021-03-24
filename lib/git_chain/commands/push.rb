@@ -32,7 +32,7 @@ module GitChain
         upstreams = {}
 
         chain.branch_names[1..-1].each do |b|
-          upstream = Git.upstream_branch(branch: b)
+          upstream = Git.push_branch(branch: b)
           if upstream
             branch_remote, upstream_branch = upstream.split("/", 2)
             if remote && branch_remote != remote
