@@ -1,0 +1,52 @@
+name: CI
+on:
+  push:
+    branches:
+      - $default-branch
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  tests:
+    name: Ruby ${{ matrix.ruby }} tests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        ruby: [ '2.7' ]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup git
+        run: |
+          git config --global user.email "test@example.com"
+          git config --global user.name "Test"
+          git config --global init.defaultBranch master
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run tests
+        run: bundle exec rake test
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run tests
+        run: bundle exec rubocop
