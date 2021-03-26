@@ -15,10 +15,7 @@ module GitChain
           raise(Abort, "A rebase is in progress. Please finish the rebase first and run 'git chain rebase' after.")
         end
 
-        raise(Abort, "Current branch '#{Git.current_branch}' is not in a chain.") unless options[:chain_name]
-
-        chain = GitChain::Models::Chain.from_config(options[:chain_name])
-        raise(Abort, "Chain '#{options[:chain_name]}' does not exist.") if chain.empty?
+        chain = current_chain(options)
 
         puts_debug("Rebasing chain #{chain.formatted}}}")
 

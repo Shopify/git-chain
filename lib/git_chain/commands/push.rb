@@ -23,11 +23,7 @@ module GitChain
       end
 
       def run(options)
-        raise(Abort, "Not currently on a chain") unless options[:chain_name]
-
-        chain = Models::Chain.from_config(options[:chain_name])
-        raise(Abort, "Chain #{options[:chain_name]} does not exist") if chain.empty?
-
+        chain = current_chain(options)
         remote = nil
         upstreams = {}
 
