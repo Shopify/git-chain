@@ -67,7 +67,7 @@ module GitChain
 
       def remote_url(branch: "", dir: nil)
         name = remote_name(branch: branch, dir: dir)
-        return if name.empty?
+        return if name.to_s.empty?
         exec("remote", "get-url", name)
       end
 
