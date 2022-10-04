@@ -64,10 +64,10 @@ module GitChain
         branch_names = chain.branch_names
 
         # Assume that all branches in the chain have the same remote as the last branch
-        last = branch_names[-1]
-        remote_url = Git.remote_url(branch: last)
+        remote_url = chain.remote_url
         unless remote_url
-          raise(Abort, "No remote detected for branch {{info:#{last}}}. Did you push your branches first?")
+          puts("  {{error:Unable to detect remote}}")
+          return
         end
 
         begin

@@ -22,6 +22,15 @@ module GitChain
         "{{info:#{name}}} {{reset:[{{cyan:#{branch_names.join(" ")}}}]}}"
       end
 
+      def remote_url
+        remote = nil
+        branch_names.reverse_each do |branch|
+          remote = Git.remote_url(branch: branch)
+          break if remote
+        end
+        remote
+      end
+
       class << self
         def from_config(name)
           chains = Git.chains(chain_name: name)
