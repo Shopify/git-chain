@@ -8,11 +8,11 @@ ruby ">= 2.6"
 # `dev` uses no gems
 
 group :development, :test do
-  gem "rubocop"
+  gem "rubocop", "~> 1.13.0"
   gem "rubocop-performance"
   gem "rubocop-minitest"
   gem "rubocop-rake"
-  gem "rubocop-shopify", require: false
+  gem "rubocop-shopify", "~> 2.0.1", require: false
   gem "rake"
 end
 

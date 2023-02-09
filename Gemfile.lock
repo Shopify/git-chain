@@ -4,7 +4,6 @@ GEM
     ansi (1.5.0)
     ast (2.4.2)
     builder (3.2.4)
-    json (2.6.3)
     minitest (5.17.0)
     minitest-reporters (1.5.0)
       ansi
@@ -20,16 +19,15 @@ GEM
     rake (13.0.6)
     regexp_parser (2.7.0)
     rexml (3.2.5)
-    rubocop (1.45.1)
-      json (~> 2.3)
+    rubocop (1.13.0)
       parallel (~> 1.10)
-      parser (>= 3.2.0.0)
+      parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
-      rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.24.1, < 2.0)
+      rexml
+      rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 2.4.0, < 3.0)
+      unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.24.1)
       parser (>= 3.1.1.0)
     rubocop-minitest (0.27.0)
@@ -39,8 +37,8 @@ GEM
       rubocop-ast (>= 0.4.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-shopify (2.5.0)
-      rubocop (~> 1.25)
+    rubocop-shopify (2.0.1)
+      rubocop (~> 1.11)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     unicode-display_width (2.4.2)
@@ -53,11 +51,11 @@ DEPENDENCIES
   minitest-reporters
   mocha
   rake
-  rubocop
+  rubocop (~> 1.13.0)
   rubocop-minitest
   rubocop-performance
   rubocop-rake
-  rubocop-shopify
+  rubocop-shopify (~> 2.0.1)
 
 RUBY VERSION
    ruby 2.7.2p137
