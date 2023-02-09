@@ -3,7 +3,7 @@ require "test_helper"
 
 module GitChain
   module Commands
-    class RebaseTest < MiniTest::Test
+    class PruneTest < MiniTest::Test
       include RepositoryTestHelper
 
       def test_clean_chain
