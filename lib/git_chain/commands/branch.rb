@@ -19,7 +19,7 @@ module GitChain
           options[:chain_name] = name
         end
 
-        opts.on("-i", "--insert", "Insert in the middle of a chain (after current branch) instead of starting a new one") do
+        opts.on("-i", "--insert", "Insert in middle of chain (after current branch) instead of starting a new one") do
           options[:mode] = :insert
         end
 
