@@ -8,6 +8,7 @@ module GitChain
     autoload :Prune, "git_chain/commands/prune"
     autoload :Push, "git_chain/commands/push"
     autoload :Setup, "git_chain/commands/setup"
+    autoload :Teardown, "git_chain/commands/teardown"
 
     ArgError = Class.new(ArgumentError)
 

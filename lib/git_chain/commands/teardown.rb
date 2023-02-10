@@ -3,11 +3,11 @@ require "optparse"
 
 module GitChain
   module Commands
-    class Delete < Command
+    class Teardown < Command
       include Options::ChainName
 
       def description
-        "Delete chain"
+        "Teardown chain"
       end
 
       def run(options)
@@ -17,7 +17,7 @@ module GitChain
 
         chain = current_chain(options)
 
-        puts_debug("Deleting chain #{chain.formatted}}}")
+        puts_debug("Tearing down chain #{chain.formatted}}}")
 
         branches = chain.branches
         branches.each do |b|
@@ -26,11 +26,7 @@ module GitChain
           Git.set_config("branch.#{b}.branchPoint", nil, scope: :local)
         end
   
-        unless branches.empty?
-          puts_warning("Removed #{branches.map { |b| "{{info:#{b}}}" }.join(", ")} from the chain.")
-        end
-  
-        puts_success("Deleted chain #{chain.formatted}")
+        puts_success("Removed chain #{chain.formatted}")
       end
     end
   end
