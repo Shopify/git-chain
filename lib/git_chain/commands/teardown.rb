@@ -25,7 +25,7 @@ module GitChain
           Git.set_config("branch.#{b}.parentBranch", nil, scope: :local)
           Git.set_config("branch.#{b}.branchPoint", nil, scope: :local)
         end
-  
+
         puts_success("Removed chain #{chain.formatted}")
       end
     end
