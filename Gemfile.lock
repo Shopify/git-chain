@@ -3,24 +3,23 @@ GEM
   specs:
     ansi (1.5.0)
     ast (2.4.2)
-    builder (3.2.3)
-    metaclass (0.0.4)
-    minitest (5.13.0)
-    minitest-reporters (1.4.2)
+    builder (3.2.4)
+    minitest (5.17.0)
+    minitest-reporters (1.5.0)
       ansi
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    mocha (1.9.0)
-      metaclass (~> 0.0.1)
-    parallel (1.20.1)
-    parser (3.0.0.0)
+    mocha (2.0.2)
+      ruby2_keywords (>= 0.0.5)
+    parallel (1.22.1)
+    parser (3.2.0.0)
       ast (~> 2.4.1)
-    rainbow (3.0.0)
-    rake (13.0.0)
-    regexp_parser (2.1.1)
+    rainbow (3.1.1)
+    rake (13.0.6)
+    regexp_parser (2.7.0)
     rexml (3.2.5)
-    rubocop (1.11.0)
+    rubocop (1.13.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -29,18 +28,20 @@ GEM
       rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.4.1)
-      parser (>= 2.7.1.5)
-    rubocop-minitest (0.11.0)
+    rubocop-ast (1.24.1)
+      parser (>= 3.1.1.0)
+    rubocop-minitest (0.27.0)
       rubocop (>= 0.90, < 2.0)
-    rubocop-performance (1.5.0)
-      rubocop (>= 0.71.0)
-    rubocop-rake (0.5.1)
-      rubocop
+    rubocop-performance (1.16.0)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rake (0.6.0)
+      rubocop (~> 1.0)
     rubocop-shopify (2.0.1)
       rubocop (~> 1.11)
     ruby-progressbar (1.11.0)
-    unicode-display_width (2.0.0)
+    ruby2_keywords (0.0.5)
+    unicode-display_width (2.4.2)
 
 PLATFORMS
   ruby
@@ -50,11 +51,11 @@ DEPENDENCIES
   minitest-reporters
   mocha
   rake
-  rubocop
+  rubocop (~> 1.13.0)
   rubocop-minitest
   rubocop-performance
   rubocop-rake
-  rubocop-shopify
+  rubocop-shopify (~> 2.0.1)
 
 RUBY VERSION
    ruby 2.7.2p137
