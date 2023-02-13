@@ -19,8 +19,7 @@ module GitChain
 
         puts_debug("Tearing down chain #{chain.formatted}}}")
 
-        branches = chain.branches
-        branches.each do |b|
+        chain.branch_names.each do |b|
           Git.set_config("branch.#{b}.chain", nil, scope: :local)
           Git.set_config("branch.#{b}.parentBranch", nil, scope: :local)
           Git.set_config("branch.#{b}.branchPoint", nil, scope: :local)
