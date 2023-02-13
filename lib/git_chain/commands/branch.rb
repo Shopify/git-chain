@@ -86,7 +86,7 @@ module GitChain
               puts_info("Appending {{info:#{branch_name}}} at the end of chain {{info:#{chain.name}}}")
               branch_names << branch_name
             else
-              puts_info("Inserting {{info:#{branch_name}}} before {{info:#{start_point}}} in chain #{chain.name}")
+              puts_info("Inserting {{info:#{branch_name}}} after {{info:#{start_point}}} in chain #{chain.name}")
               index = branch_names.index(start_point)
               branch_names.insert(index + 1, branch_name)
             end
