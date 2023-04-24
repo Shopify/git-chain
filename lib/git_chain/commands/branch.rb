@@ -74,7 +74,7 @@ module GitChain
         branch_names = chain.branch_names
 
         if branch_names.empty?
-          raise(Abort, "Unable to insert, #{chain_name} does not exist yet") if options[:mode] == :insert
+          raise(Abort, "Unable to insert, #{options[:chain_name]} does not exist yet") if options[:mode] == :insert
           branch_names << start_point << branch_name
         else
           is_last = branch_names.last == start_point
