@@ -57,8 +57,5 @@ DEPENDENCIES
   rubocop-rake
   rubocop-shopify (~> 2.0.1)
 
-RUBY VERSION
-   ruby 2.7.2p137
-
 BUNDLED WITH
    2.2.22
