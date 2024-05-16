@@ -6,7 +6,7 @@ source "https://rubygems.org"
 # `dev` uses no gems
 
 group :development, :test do
-  gem "rubocop", "~> 1.13.0"
+  gem "rubocop", "~> 1.50.2"
   gem "rubocop-performance"
   gem "rubocop-minitest"
   gem "rubocop-rake"
