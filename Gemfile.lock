@@ -62,4 +62,4 @@ DEPENDENCIES
   rubocop-shopify (~> 2.0.1)
 
 BUNDLED WITH
-   2.2.22
+   2.2.33
