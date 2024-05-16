@@ -12,13 +12,16 @@ GEM
       ruby-progressbar
     mocha (2.0.2)
       ruby2_keywords (>= 0.0.5)
-    parallel (1.22.1)
-    parser (3.2.0.0)
+    parallel (1.24.0)
+    parser (3.3.1.0)
       ast (~> 2.4.1)
+      racc
+    racc (1.7.3)
     rainbow (3.1.1)
     rake (13.2.1)
-    regexp_parser (2.7.0)
-    rexml (3.2.5)
+    regexp_parser (2.9.2)
+    rexml (3.2.8)
+      strscan (>= 3.0.9)
     rubocop (1.13.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -28,8 +31,8 @@ GEM
       rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.24.1)
-      parser (>= 3.1.1.0)
+    rubocop-ast (1.30.0)
+      parser (>= 3.2.1.0)
     rubocop-minitest (0.27.0)
       rubocop (>= 0.90, < 2.0)
     rubocop-performance (1.16.0)
@@ -37,11 +40,12 @@ GEM
       rubocop-ast (>= 0.4.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-shopify (2.0.1)
-      rubocop (~> 1.11)
+    rubocop-shopify (2.1.0)
+      rubocop (~> 1.13)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    unicode-display_width (2.4.2)
+    strscan (3.1.0)
+    unicode-display_width (2.5.0)
 
 PLATFORMS
   ruby
@@ -55,7 +59,7 @@ DEPENDENCIES
   rubocop-minitest
   rubocop-performance
   rubocop-rake
-  rubocop-shopify (~> 2.0.1)
+  rubocop-shopify (~> 2.1.0)
 
 BUNDLED WITH
    2.2.22

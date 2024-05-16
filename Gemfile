@@ -10,7 +10,7 @@ group :development, :test do
   gem "rubocop-performance"
   gem "rubocop-minitest"
   gem "rubocop-rake"
-  gem "rubocop-shopify", "~> 2.0.1", require: false
+  gem "rubocop-shopify", "~> 2.1.0", require: false
   gem "rake"
 end
 
