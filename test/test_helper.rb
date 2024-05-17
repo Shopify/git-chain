@@ -7,7 +7,7 @@ require "mocha/minitest"
 require "minitest/autorun"
 require "minitest/reporters"
 
-MiniTest::Reporters.use!
+Minitest::Reporters.use!
 CLI::UI.enable_color = true
 
 require "tmpdir"

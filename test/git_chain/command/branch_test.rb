@@ -3,7 +3,7 @@ require "test_helper"
 
 module GitChain
   module Commands
-    class BranchTest < MiniTest::Test
+    class BranchTest < Minitest::Test
       include RepositoryTestHelper
 
       def test_append
