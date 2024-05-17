@@ -2,7 +2,7 @@
 require "test_helper"
 
 module GitChain
-  class FixturesTest < MiniTest::Test
+  class FixturesTest < Minitest::Test
     include RepositoryTestHelper
 
     def test_with_test_repository

@@ -3,7 +3,7 @@ require "test_helper"
 
 module GitChain
   module Commands
-    class TeardownTest < MiniTest::Test
+    class TeardownTest < Minitest::Test
       include RepositoryTestHelper
 
       def test_tearing_down_a_clean_chain

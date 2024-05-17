@@ -2,7 +2,7 @@
 require "test_helper"
 
 module GitChain
-  class EntryPointTest < MiniTest::Test
+  class EntryPointTest < Minitest::Test
     def test_commands
       refute_nil(EntryPoint.commands["setup"])
     end

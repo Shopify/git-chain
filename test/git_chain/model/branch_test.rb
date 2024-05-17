@@ -3,7 +3,7 @@ require "test_helper"
 
 module GitChain
   module Models
-    class BranchTest < MiniTest::Test
+    class BranchTest < Minitest::Test
       include RepositoryTestHelper
 
       def test_from_config

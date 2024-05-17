@@ -3,7 +3,7 @@ require "test_helper"
 
 module GitChain
   module Util
-    class GithubTest < MiniTest::Test
+    class GithubTest < Minitest::Test
       def test_parse_url
         %w(
           git@github.com:Shopify/git-chain.git

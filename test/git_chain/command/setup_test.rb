@@ -3,7 +3,7 @@ require "test_helper"
 
 module GitChain
   module Commands
-    class SetupTest < MiniTest::Test
+    class SetupTest < Minitest::Test
       include RepositoryTestHelper
 
       def test_chain_noop
