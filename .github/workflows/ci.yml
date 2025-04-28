@@ -22,7 +22,7 @@ jobs:
           - 3.1
           - 3.2
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
       - name: Setup git
         run: |
@@ -30,7 +30,7 @@ jobs:
           git config --global user.name "Test"
           git config --global init.defaultBranch master
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.235.0
         with:
           ruby-version: ${{ matrix.ruby }}
 
@@ -44,9 +44,9 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.235.0
 
       - name: Install dependencies
         run: bundle install
