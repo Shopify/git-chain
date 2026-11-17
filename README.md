@@ -1,5 +1,7 @@
 # Git Chain
 
+> **This repository is no longer maintained.** It has been archived and receives no updates or security fixes. Git 2.38 and later can rebase a chain of dependent branches natively with `git rebase --update-refs` (or by default with `git config rebase.updateRefs true`).
+
 Tool to rebase multiple Git branches based on the previous one.
 
 ## What does Git Chain do?
